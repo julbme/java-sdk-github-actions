@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GitHubActionsKit.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Julb.me :: Java SDK for GitHub actions</a> &gt; <a href="index.source.html" class="el_package">me.julb.sdk.github.actions.kit</a> &gt; <span class="el_source">GitHubActionsKit.java</span></div><h1>GitHubActionsKit.java</h1><pre class="source lang-java linenums">/**
+ * MIT License
+ *
+ * Copyright (c) 2017-2022 Julb
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package me.julb.sdk.github.actions.kit;
+
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.concurrent.Callable;
+
+import lombok.AccessLevel;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+/**
+ * Kit methods for GitHub actions. &lt;br&gt;
+ * @author Julb.
+ */
+<span class="fc" id="L40">@RequiredArgsConstructor(access = AccessLevel.PACKAGE)</span>
+public class GitHubActionsKit {
+
+    /**
+     * The public instance to use.
+     */
+<span class="fc" id="L46">    public static final GitHubActionsKit INSTANCE = new GitHubActionsKit(new SystemProxySystemImpl());</span>
+
+    /**
+     * An interface proxifying {@link java.lang.System} calls.
+     */
+    private final SystemProxy systemProxy;
+
+    /**
+     * Gets the input with the given name.
+     * @param name the input name.
+     * @return the input value trimmed, or empty if input is not provided.
+     */
+<span class="fc bfc" id="L58" title="All 2 branches covered.">    public Optional&lt;String&gt; getInput(@NonNull String name) {</span>
+<span class="fc" id="L59">        return getInput(name, true);</span>
+    }
+
+    /**
+     * Gets the input with the given name, with the option to trim the value.
+     * @param name the input name.
+     * @param trimValue &lt;code&gt;true&lt;/code&gt; to trim the input value, &lt;code&gt;false&lt;/code&gt; to let as-is.
+     * @return the input value or empty if input is not provided.
+     */
+<span class="fc bfc" id="L68" title="All 2 branches covered.">    public Optional&lt;String&gt; getInput(@NonNull String name, boolean trimValue) {</span>
+<span class="fc" id="L69">        var inputEnvProperty = &quot;INPUT_&quot; + name.replaceAll(&quot;\\s&quot;, &quot;_&quot;).toUpperCase();</span>
+<span class="fc" id="L70">        return getEnv(inputEnvProperty).map(v -&gt; {</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">            if (trimValue) {</span>
+<span class="fc" id="L72">                return v.trim();</span>
+            } else {
+<span class="fc" id="L74">                return v;</span>
+            }
+        });
+    }
+
+    /**
+     * Gets the input with the given name.&lt;br&gt;
+     * This method throws a NoSuchElementException if the input does not exist.
+     * @param name the input name.
+     * @return the input value.
+     * @throws NoSuchElementException if the object does not exist.
+     */
+<span class="fc bfc" id="L86" title="All 2 branches covered.">    public String getRequiredInput(@NonNull String name) {</span>
+<span class="fc" id="L87">        return getInput(name).orElseThrow();</span>
+    }
+
+    /**
+     * Gets the input with the given name.&lt;br&gt;
+     * This method throws a NoSuchElementException if the input does not exist.
+     * @param name the input name.
+     * @param trimValue &lt;code&gt;true&lt;/code&gt; to trim the input value, &lt;code&gt;false&lt;/code&gt; to let as-is.
+     * @return the input value or empty if input is not provided.
+     * @throws NoSuchElementException if the object does not exist.
+     */
+<span class="fc bfc" id="L98" title="All 2 branches covered.">    public String getRequiredInput(@NonNull String name, boolean trimValue) {</span>
+<span class="fc" id="L99">        return getInput(name, trimValue).orElseThrow();</span>
+    }
+
+    /**
+     * Gets the boolean input with the given name.
+     * @param name the input name.
+     * @return the input value trimmed, or empty if input is not provided.
+     * @throws IllegalArgumentException if the value is not a valid boolean value.
+     */
+<span class="fc bfc" id="L108" title="All 2 branches covered.">    public Optional&lt;Boolean&gt; getBooleanInput(@NonNull String name) {</span>
+<span class="fc" id="L109">        return getInput(name, true).map(s -&gt; {</span>
+<span class="fc" id="L110">            var sUpperCase = s.toLowerCase();</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">            if (Boolean.TRUE.toString().equals(sUpperCase)) {</span>
+<span class="fc" id="L112">                return true;</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">            } else if (Boolean.FALSE.toString().equals(sUpperCase)) {</span>
+<span class="fc" id="L114">                return false;</span>
+            } else {
+<span class="fc" id="L116">                throw new IllegalArgumentException(s);</span>
+            }
+        });
+    }
+
+    /**
+     * Gets the boolean input with the given name.&lt;br&gt;
+     * This method throws a NoSuchElementException if the input does not exist.
+     * @param name the input name.
+     * @return the input value.
+     * @throws NoSuchElementException if the object does not exist.
+     * @throws IllegalArgumentException if the value is not a valid boolean value.
+     */
+<span class="fc bfc" id="L129" title="All 2 branches covered.">    public Boolean getRequiredBooleanInput(@NonNull String name) {</span>
+<span class="fc" id="L130">        return getBooleanInput(name).orElseThrow();</span>
+    }
+
+    /**
+     * Gets the input value with the given name as an {@link Enum}.
+     * @param &lt;T&gt; the enum object type.
+     * @param name the input name.
+     * @param enumClass the enum class.
+     * @return the input value as an enum, or empty if input is not provided.
+     * @throws IllegalArgumentException if the value is not a valid enum value.
+     */
+<span class="fc bfc" id="L141" title="All 2 branches covered.">    public &lt;T extends Enum&lt;T&gt;&gt; Optional&lt;T&gt; getEnumInput(@NonNull String name, Class&lt;T&gt; enumClass) {</span>
+<span class="fc" id="L142">        return getInput(name, true).map(s -&gt; {</span>
+<span class="fc" id="L143">            var sUpperCase = s.toUpperCase();</span>
+<span class="fc" id="L144">            return Enum.valueOf(enumClass, sUpperCase);</span>
+        });
+    }
+
+    /**
+     * Gets the enum input value with the given name as an {@link Enum}.&lt;br&gt;
+     * This method throws a NoSuchElementException if the input does not exist.
+     * @param &lt;T&gt; the enum object type.
+     * @param name the input name.
+     * @param enumClass the enum class.
+     * @return the input value as an enum, or empty if input is not provided.
+     * @throws NoSuchElementException if the object does not exist.
+     * @throws IllegalArgumentException if the value is not a valid enum value.
+     */
+<span class="fc bfc" id="L158" title="All 2 branches covered.">    public &lt;T extends Enum&lt;T&gt;&gt; T getRequiredEnumInput(@NonNull String name, Class&lt;T&gt; enumClass) {</span>
+<span class="fc" id="L159">        return getEnumInput(name, enumClass).orElseThrow();</span>
+    }
+
+    /**
+     * Gets the multiline input with the given name.&lt;br&gt;
+     * Each value is trimmed and blank values are not returned.
+     * @param name the input name.
+     * @return the multiline input value as an array, or empty if input is not provided.
+     */
+<span class="fc bfc" id="L168" title="All 2 branches covered.">    public Optional&lt;String[]&gt; getMultilineInput(@NonNull String name) {</span>
+<span class="fc" id="L169">        return getMultilineInput(name, true);</span>
+    }
+
+    /**
+     * Gets the multiline input with the given name.&lt;br&gt;
+     * Blank values are not returned.
+     * @param name the input name.
+     * @param trimValue &lt;code&gt;true&lt;/code&gt; to trim the input value, &lt;code&gt;false&lt;/code&gt; to let as-is.
+     * @return the multiline input value as an array, or empty if input is not provided.
+     */
+<span class="fc bfc" id="L179" title="All 2 branches covered.">    public Optional&lt;String[]&gt; getMultilineInput(@NonNull String name, boolean trimValue) {</span>
+<span class="fc bfc" id="L180" title="All 4 branches covered.">        return getInput(name, trimValue).map(String::lines).map(stream -&gt; stream.map(s -&gt; trimValue ? s.trim() : s).filter(s -&gt; !s.isBlank()).toArray(String[]::new));</span>
+    }
+
+    /**
+     * Gets the multiline input with the given name.&lt;br&gt;
+     * &lt;br&gt;
+     * This method throws a NoSuchElementException if the input does not exist.&lt;br&gt;
+     * Each value is trimmed and blank values are not returned.
+     * @param name the input name.
+     * @return the multiline input value as an array.
+     * @throws NoSuchElementException if the object does not exist.
+     */
+<span class="fc bfc" id="L192" title="All 2 branches covered.">    public String[] getRequiredMultilineInput(@NonNull String name) {</span>
+<span class="fc" id="L193">        return getMultilineInput(name).orElseThrow();</span>
+    }
+
+    /**
+     * Gets the multiline input with the given name.&lt;br&gt;
+     * &lt;br&gt;
+     * This method throws a NoSuchElementException if the input does not exist.&lt;br&gt;
+     * Blank values are not returned.
+     * @param name the input name.
+     * @param trimValue &lt;code&gt;true&lt;/code&gt; to trim the input value, &lt;code&gt;false&lt;/code&gt; to let as-is.
+     * @return the multiline input value as an array.
+     * @throws NoSuchElementException if the object does not exist.
+     */
+<span class="fc bfc" id="L206" title="All 2 branches covered.">    public String[] getRequiredMultilineInput(@NonNull String name, boolean trimValue) {</span>
+<span class="fc" id="L207">        return getMultilineInput(name, trimValue).orElseThrow();</span>
+    }
+
+    /**
+     * Sets the given output variable.
+     * @param &lt;T&gt; the output object type.
+     * @param name the output variable name.
+     * @param value the output variable value.
+     */
+<span class="fc bfc" id="L216" title="All 4 branches covered.">    public &lt;T&gt; void setOutput(@NonNull String name, @NonNull T value) {</span>
+<span class="fc" id="L217">        issue(&quot;set-output&quot;, Map.of(&quot;name&quot;, name), value);</span>
+<span class="fc" id="L218">    }</span>
+
+    /**
+     * Enables or disables the echoing of commands into STDOUT for the rest of the step.&lt;br&gt;
+     * Echoing is disabled by default if ACTIONS_STEP_DEBUG is not set.
+     * @param enabled &lt;code&gt;true&lt;/code&gt; to enable, &lt;code&gt;false&lt;/code&gt; otherwise.
+     */
+    public void setCommandEcho(boolean enabled) {
+<span class="fc bfc" id="L226" title="All 2 branches covered.">        issue(&quot;echo&quot;, enabled ? &quot;on&quot; : &quot;off&quot;);</span>
+<span class="fc" id="L227">    }</span>
+
+    /**
+     * Starts a group with the given name.&lt;br&gt;
+     * Output until the call to {@link #endGroup()} will be foldable.
+     * @param name the name of the group.
+     */
+<span class="fc bfc" id="L234" title="All 2 branches covered.">    public void startGroup(@NonNull String name) {</span>
+<span class="fc" id="L235">        issue(&quot;group&quot;, name);</span>
+<span class="fc" id="L236">    }</span>
+
+    /**
+     * Executes the given {@link Runnable} in a group.
+     * @param name the group name.
+     * @param exec the {@link Runnable} to execute within the group.
+     */
+<span class="fc bfc" id="L243" title="All 4 branches covered.">    public void group(@NonNull String name, @NonNull Runnable exec) {</span>
+<span class="fc" id="L244">        startGroup(name);</span>
+        try {
+<span class="fc" id="L246">            exec.run();</span>
+        } finally {
+<span class="fc" id="L248">            endGroup();</span>
+        }
+<span class="fc" id="L250">    }</span>
+
+    /**
+     * Executes the given callable in a group.
+     * @param &lt;T&gt; the object type returned by the given {@link Callable}.
+     * @param name the group name.
+     * @param exec the {@link Callable} to execute within the group.
+     * @return the result returned by the {@link Callable}.
+     * @throws Exception propagate as-is the exception thrown by the {@link Callable}.
+     */
+<span class="fc bfc" id="L260" title="All 4 branches covered.">    public &lt;T&gt; T group(@NonNull String name, @NonNull Callable&lt;T&gt; exec)</span>
+        throws Exception {
+<span class="fc" id="L262">        startGroup(name);</span>
+        try {
+<span class="fc" id="L264">            return exec.call();</span>
+        } finally {
+<span class="fc" id="L266">            endGroup();</span>
+        }
+    }
+
+    /**
+     * Ends a group.
+     */
+    public void endGroup() {
+<span class="fc" id="L274">        issue(&quot;endgroup&quot;);</span>
+<span class="fc" id="L275">    }</span>
+
+    /**
+     * Saves the state for current action, the state can only be retrieved by this action's post job execution.
+     * @param &lt;T&gt; the state value object type.
+     * @param name the state variable name.
+     * @param value the state variable value.
+     */
+<span class="fc bfc" id="L283" title="All 4 branches covered.">    public &lt;T&gt; void saveState(@NonNull String name, @NonNull T value) {</span>
+<span class="fc" id="L284">        issue(&quot;save-state&quot;, Map.of(&quot;name&quot;, name), value);</span>
+<span class="fc" id="L285">    }</span>
+
+    /**
+     * Gets the value of an state set by this action's main execution.
+     * @param name the state variable name.
+     * @return the state value or empty if state is not set.
+     */
+<span class="fc bfc" id="L292" title="All 2 branches covered.">    public Optional&lt;String&gt; getState(@NonNull String name) {</span>
+<span class="fc" id="L293">        var stateEnvProperty = &quot;STATE_&quot; + name.replaceAll(&quot;\\s&quot;, &quot;_&quot;).toUpperCase();</span>
+<span class="fc" id="L294">        return getEnv(stateEnvProperty);</span>
+    }
+
+    /**
+     * Registers a secret which will get masked from logs.
+     * @param &lt;T&gt; the secret value object type.
+     * @param value the secret value.
+     */
+<span class="fc bfc" id="L302" title="All 2 branches covered.">    public &lt;T&gt; void setSecret(@NonNull T value) {</span>
+<span class="fc" id="L303">        issue(&quot;add-mask&quot;, value);</span>
+<span class="fc" id="L304">    }</span>
+
+    /**
+     * Returns &lt;code&gt;true&lt;/code&gt; if DEBUG mode is enabled in the runner, &lt;code&gt;false&lt;/code&gt; otherwise.
+     * @return &lt;code&gt;true&lt;/code&gt; if DEBUG mode is enabled in the runner, &lt;code&gt;false&lt;/code&gt; otherwise.
+     */
+    public boolean isDebug() {
+<span class="fc" id="L311">        return getEnv(&quot;RUNNER_DEBUG&quot;).map(v -&gt; v.equals(&quot;1&quot;)).orElse(false);</span>
+    }
+
+    /**
+     * Prints a &lt;code&gt;DEBUG&lt;/code&gt; message to user log.
+     * @param message the message.
+     */
+<span class="fc bfc" id="L318" title="All 2 branches covered.">    public void debug(@NonNull String message) {</span>
+<span class="fc" id="L319">        issue(&quot;debug&quot;, message);</span>
+<span class="fc" id="L320">    }</span>
+
+    /**
+     * Prints a &lt;code&gt;NOTICE&lt;/code&gt; message to user log.
+     * @param message the message.
+     */
+<span class="fc bfc" id="L326" title="All 2 branches covered.">    public void notice(@NonNull String message) {</span>
+<span class="fc" id="L327">        notice(message, Optional.empty());</span>
+<span class="fc" id="L328">    }</span>
+
+    /**
+     * Prints a &lt;code&gt;NOTICE&lt;/code&gt; message to user log.
+     * @param message the message.
+     * @param properties the annotations to add to the message.
+     */
+<span class="fc bfc" id="L335" title="All 4 branches covered.">    public void notice(@NonNull String message, @NonNull Optional&lt;AnnotationProperties&gt; properties) {</span>
+<span class="fc" id="L336">        issue(&quot;notice&quot;, properties.map(AnnotationProperties::toMap).orElse(Map.of()), message);</span>
+<span class="fc" id="L337">    }</span>
+
+    /**
+     * Prints a &lt;code&gt;WARNING&lt;/code&gt; message to user log.
+     * @param message the message.
+     */
+<span class="fc bfc" id="L343" title="All 2 branches covered.">    public void warning(@NonNull String message) {</span>
+<span class="fc" id="L344">        warning(message, Optional.empty());</span>
+<span class="fc" id="L345">    }</span>
+
+    /**
+     * Prints a &lt;code&gt;WARNING&lt;/code&gt; message to user log.
+     * @param message the message.
+     * @param properties the annotations to add to the message.
+     */
+<span class="fc bfc" id="L352" title="All 4 branches covered.">    public void warning(@NonNull String message, @NonNull Optional&lt;AnnotationProperties&gt; properties) {</span>
+<span class="fc" id="L353">        issue(&quot;warning&quot;, properties.map(AnnotationProperties::toMap).orElse(Map.of()), message);</span>
+<span class="fc" id="L354">    }</span>
+
+    /**
+     * Prints a &lt;code&gt;ERROR&lt;/code&gt; message to user log.
+     * @param message the message.
+     */
+<span class="fc bfc" id="L360" title="All 2 branches covered.">    public void error(@NonNull String message) {</span>
+<span class="fc" id="L361">        error(message, Optional.empty());</span>
+<span class="fc" id="L362">    }</span>
+
+    /**
+     * Prints a &lt;code&gt;ERROR&lt;/code&gt; message to user log with given annotation properties.
+     * @param message the message.
+     * @param properties the annotations to add to the message.
+     */
+<span class="fc bfc" id="L369" title="All 4 branches covered.">    public void error(@NonNull String message, @NonNull Optional&lt;AnnotationProperties&gt; properties) {</span>
+<span class="fc" id="L370">        issue(&quot;error&quot;, properties.map(AnnotationProperties::toMap).orElse(Map.of()), message);</span>
+<span class="fc" id="L371">    }</span>
+
+    /**
+     * Fails the process with the given message.
+     * @param message the error message.
+     */
+<span class="fc bfc" id="L377" title="All 2 branches covered.">    public void fail(@NonNull String message) {</span>
+<span class="fc" id="L378">        error(message);</span>
+<span class="fc" id="L379">        this.systemProxy.exit(1);</span>
+<span class="fc" id="L380">    }</span>
+
+    /**
+     * Returns the owner and repository name. For example, &lt;code&gt;octocat/Hello-World&lt;/code&gt;. See &lt;code&gt;GITHUB_REPOSITORY&lt;/code&gt;.
+     * @return the owner and repository name. For example, &lt;code&gt;octocat/Hello-World&lt;/code&gt;. See &lt;code&gt;GITHUB_REPOSITORY&lt;/code&gt;.
+     * @throws NoSuchElementException if the object does not exist.
+     */
+    public String getGitHubRepository() {
+<span class="fc" id="L388">        return getEnv(&quot;GITHUB_REPOSITORY&quot;).orElseThrow();</span>
+    }
+
+    /**
+     * Returns the type of ref that triggered the workflow run. Valid values are &lt;code&gt;branch&lt;/code&gt; or &lt;code&gt;tag&lt;/code&gt;. See &lt;code&gt;GITHUB_REF_TYPE&lt;/code&gt;.
+     * @return the type of ref that triggered the workflow run. Valid values are &lt;code&gt;branch&lt;/code&gt; or &lt;code&gt;tag&lt;/code&gt;. See &lt;code&gt;GITHUB_REF_TYPE&lt;/code&gt;.
+     * @throws NoSuchElementException if the object does not exist.
+     */
+    public String getGitHubRefType() {
+<span class="fc" id="L397">        return getEnv(&quot;GITHUB_REF_TYPE&quot;).orElseThrow();</span>
+    }
+
+    /**
+     * Returns &lt;code&gt;true&lt;/code&gt; if the type of ref that triggered the workflow run is &lt;code&gt;branch&lt;/code&gt;. See &lt;code&gt;GITHUB_REF_TYPE&lt;/code&gt;.
+     * @return &lt;code&gt;true&lt;/code&gt; if the type of ref that triggered the workflow run is &lt;code&gt;branch&lt;/code&gt;. See &lt;code&gt;GITHUB_REF_TYPE&lt;/code&gt;.
+     * @throws NoSuchElementException if the object does not exist.
+     */
+    public boolean isGitHubRefTypeBranch() {
+<span class="fc" id="L406">        return getGitHubRefType().equalsIgnoreCase(&quot;branch&quot;);</span>
+    }
+
+    /**
+     * Returns &lt;code&gt;true&lt;/code&gt; if the type of ref that triggered the workflow run is &lt;code&gt;tag&lt;/code&gt;. See &lt;code&gt;GITHUB_REF_TYPE&lt;/code&gt;.
+     * @return &lt;code&gt;true&lt;/code&gt; if the type of ref that triggered the workflow run is &lt;code&gt;tag&lt;/code&gt;. See &lt;code&gt;GITHUB_REF_TYPE&lt;/code&gt;.
+     * @throws NoSuchElementException if the object does not exist.
+     */
+    public boolean isGitHubRefTypeTag() {
+<span class="fc" id="L415">        return getGitHubRefType().equalsIgnoreCase(&quot;tag&quot;);</span>
+    }
+
+    /**
+     * Returns the branch or tag ref that triggered the workflow run. See &lt;code&gt;GITHUB_REF&lt;/code&gt;.
+     * @return the branch or tag ref that triggered the workflow run. See &lt;code&gt;GITHUB_REF&lt;/code&gt;.
+     * @throws NoSuchElementException if the object does not exist.
+     */
+    public String getGitHubRef() {
+<span class="fc" id="L424">        return getEnv(&quot;GITHUB_REF&quot;).orElseThrow();</span>
+    }
+
+    /**
+     * Returns the branch or tag name that triggered the workflow run. See &lt;code&gt;GITHUB_REF_NAME&lt;/code&gt;.
+     * @return the branch or tag name that triggered the workflow run. See &lt;code&gt;GITHUB_REF_NAME&lt;/code&gt;.
+     * @throws NoSuchElementException if the object does not exist.
+     */
+    public String getGitHubRefName() {
+<span class="fc" id="L433">        return getEnv(&quot;GITHUB_REF_NAME&quot;).orElseThrow();</span>
+    }
+
+    /**
+     * Returns the commit SHA that triggered the workflow. See &lt;code&gt;GITHUB_SHA&lt;/code&gt;.
+     * @return the commit SHA that triggered the workflow. See &lt;code&gt;GITHUB_SHA&lt;/code&gt;.
+     * @throws NoSuchElementException if the object does not exist.
+     */
+    public String getGitHubSha() {
+<span class="fc" id="L442">        return getEnv(&quot;GITHUB_SHA&quot;).orElseThrow();</span>
+    }
+
+    /**
+     * Returns the commit abbreviated SHA that triggered the workflow. See &lt;code&gt;GITHUB_SHA&lt;/code&gt;.
+     * @return the commit abbreviated SHA that triggered the workflow. See &lt;code&gt;GITHUB_SHA&lt;/code&gt;.
+     * @throws NoSuchElementException if the object does not exist.
+     */
+    public String getGitHubAbbreviatedSha() {
+<span class="fc" id="L451">        var sha = getGitHubSha();</span>
+<span class="fc" id="L452">        return sha.substring(0, Math.min(7, sha.length()));</span>
+    }
+
+    /**
+     * Returns the workflow run identifier. See &lt;code&gt;GITHUB_RUN_ID&lt;/code&gt;.
+     * @return the workflow run identifier. See &lt;code&gt;GITHUB_RUN_ID&lt;/code&gt;.
+     * @throws NoSuchElementException if the object does not exist.
+     */
+    public String getGitHubRunId() {
+<span class="fc" id="L461">        return getEnv(&quot;GITHUB_RUN_ID&quot;).orElseThrow();</span>
+    }
+
+    /**
+     * Returns the GitHub API url. See &lt;code&gt;GITHUB_API_URL&lt;/code&gt;.
+     * @return the GitHub API url. See &lt;code&gt;GITHUB_API_URL&lt;/code&gt;.
+     * @throws NoSuchElementException if the object does not exist.
+     */
+    public String getGitHubApiUrl() {
+<span class="fc" id="L470">        return getEnv(&quot;GITHUB_API_URL&quot;).orElseThrow();</span>
+    }
+
+    /**
+     * Gets the environment variable value.
+     * @param name the environment variable name.
+     * @return the value if the environment variable exists, or {@link Optional#empty()}.
+     */
+<span class="fc bfc" id="L478" title="All 2 branches covered.">    public Optional&lt;String&gt; getEnv(@NonNull String name) {</span>
+<span class="fc" id="L479">        return Optional.ofNullable(this.systemProxy.getenv(name));</span>
+    }
+
+    /**
+     * Gets an environment variable value.
+     * @param name the environment variable name.
+     * @return the value if the environment variable exists, or {@link Optional#empty()}.
+     */
+<span class="fc bfc" id="L487" title="All 2 branches covered.">    public String getRequiredEnv(@NonNull String name) {</span>
+<span class="fc" id="L488">        return getEnv(name).orElseThrow();</span>
+    }
+
+    /**
+     * Issues the command.
+     * @param command the command to execute.
+     */
+    private void issue(String command) {
+<span class="fc" id="L496">        issueCommand(command, Optional.empty(), Optional.empty());</span>
+<span class="fc" id="L497">    }</span>
+
+    /**
+     * Issues the command with the message.
+     * @param &lt;M&gt; the message object type.
+     * @param command the command to execute.
+     * @param message the message to attach.
+     */
+    private &lt;M&gt; void issue(String command, M message) {
+<span class="fc" id="L506">        issueCommand(command, Optional.empty(), Optional.of(message));</span>
+<span class="fc" id="L507">    }</span>
+
+    /**
+     * Issue the command with the properties and the message.
+     * @param &lt;P&gt; the property value object type.
+     * @param &lt;M&gt; the message object type.
+     * @param command the command to execute.
+     * @param properties the properties to attach.
+     * @param message the message to attach.
+     */
+    private &lt;P, M&gt; void issue(String command, Map&lt;String, P&gt; properties, M message) {
+<span class="fc" id="L518">        issueCommand(command, Optional.of(properties), Optional.of(message));</span>
+<span class="fc" id="L519">    }</span>
+
+    /**
+     * Implementation of the process to issue the command with the properties and the message.
+     * @param &lt;P&gt; the property value object type.
+     * @param &lt;M&gt; the message object type.
+     * @param command the command to execute.
+     * @param properties the properties to attach.
+     * @param message the message to attach.
+     */
+    private &lt;P, M&gt; void issueCommand(String command, Optional&lt;Map&lt;String, P&gt;&gt; properties, Optional&lt;M&gt; message) {
+<span class="fc" id="L530">        this.systemProxy.println(new ExecCommand&lt;&gt;(command, properties, message).toString());</span>
+<span class="fc" id="L531">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

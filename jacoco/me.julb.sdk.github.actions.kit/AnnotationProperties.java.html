@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AnnotationProperties.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Julb.me :: Java SDK for GitHub actions</a> &gt; <a href="index.source.html" class="el_package">me.julb.sdk.github.actions.kit</a> &gt; <span class="el_source">AnnotationProperties.java</span></div><h1>AnnotationProperties.java</h1><pre class="source lang-java linenums">/**
+ * MIT License
+ *
+ * Copyright (c) 2017-2022 Julb
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package me.julb.sdk.github.actions.kit;
+
+import java.util.Map;
+import java.util.Optional;
+import java.util.TreeMap;
+
+import lombok.Builder;
+
+/**
+ * Optional properties which can be sent with logging commands (notice, error, and warning). &lt;br&gt;
+ * @author Julb.
+ */
+<span class="pc" id="L37">@Builder</span>
+public class AnnotationProperties {
+
+    //@formatter:off
+     /**
+     * A title for the annotation.
+     * -- GETTER --
+     * Getter for {@link #title} property.
+     * @return the value.
+     * -- SETTER --
+     * Setter for {@link #title} property.
+     * @param title the value to set.
+     */
+     //@formatter:on
+    private String title;
+
+    //@formatter:off
+     /**
+     * The path of the file for which the annotation should be created.
+     * -- GETTER --
+     * Getter for {@link #file} property.
+     * @return the value.
+     * -- SETTER --
+     * Setter for {@link #file} property.
+     * @param file the value to set.
+     */
+     //@formatter:on
+    private String file;
+
+    //@formatter:off
+     /**
+     * The start line for the annotation.
+     * -- GETTER --
+     * Getter for {@link #startLine} property.
+     * @return the value.
+     * -- SETTER --
+     * Setter for {@link #startLine} property.
+     * @param startLine the value to set.
+     */
+     //@formatter:on
+    private Integer startLine;
+
+    //@formatter:off
+     /**
+     * The end line for the annotation. Defaults to `startLine` when `startLine` is provided.
+     * -- GETTER --
+     * Getter for {@link #endLine} property.
+     * @return the value.
+     * -- SETTER --
+     * Setter for {@link #endLine} property.
+     * @param endLine the value to set.
+     */
+     //@formatter:on
+    private Integer endLine;
+
+    //@formatter:off
+     /**
+     * The start column for the annotation. Cannot be sent when `startLine` and `endLine` are different values.
+     * -- GETTER --
+     * Getter for {@link #startColumn} property.
+     * @return the value.
+     * -- SETTER --
+     * Setter for {@link #startColumn} property.
+     * @param startColumn the value to set.
+     */
+     //@formatter:on
+    private Integer startColumn;
+
+    //@formatter:off
+     /**
+     * The start column for the annotation. Cannot be sent when `startLine` and `endLine` are different values. Defaults to `startColumn` when `startColumn` is provided.
+     * -- GETTER --
+     * Getter for {@link #endColumn} property.
+     * @return the value.
+     * -- SETTER --
+     * Setter for {@link #endColumn} property.
+     * @param endColumn the value to set.
+     */
+     //@formatter:on
+    private Integer endColumn;
+
+    // ------------------------------------------ Utility methods.
+
+    /**
+     * Serializes the properties as a {@link Map}.
+     * @return the properties as a {@link Map}.
+     */
+    public Map&lt;String, String&gt; toMap() {
+<span class="fc" id="L125">        var map = new TreeMap&lt;String, String&gt;();</span>
+<span class="fc" id="L126">        map.put(&quot;title&quot;, title);</span>
+<span class="fc" id="L127">        map.put(&quot;file&quot;, file);</span>
+<span class="fc" id="L128">        map.put(&quot;line&quot;, Optional.ofNullable(startLine).map(Object::toString).orElse(null));</span>
+<span class="fc" id="L129">        map.put(&quot;endLine&quot;, Optional.ofNullable(endLine).map(Object::toString).orElse(null));</span>
+<span class="fc" id="L130">        map.put(&quot;col&quot;, Optional.ofNullable(startColumn).map(Object::toString).orElse(null));</span>
+<span class="fc" id="L131">        map.put(&quot;endColumn&quot;, Optional.ofNullable(endColumn).map(Object::toString).orElse(null));</span>
+<span class="fc" id="L132">        return map;</span>
+    }
+
+    // ------------------------------------------ Read methods.
+
+    // ------------------------------------------ Write methods.
+
+    // ------------------------------------------ Overridden methods.
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
