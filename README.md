@@ -12,7 +12,7 @@ It is heavily inspired of GitHub Actions [core toolkit](https://github.com/actio
 This SDK provides the following capabilities:
 
 * Read inputs: `getInput`, `getMultilineInput`, `getBooleanInput`
-* Write output variables: `setOutput`
+* Write output variables: `setOutput`, `setEmptyOutput`
 * Mask secret variables: `setSecret`
 * Run operations within groups: `startGroup`, `endGroup`, `group` with closure
 * Save and retrieve state: `saveState`, `getState`

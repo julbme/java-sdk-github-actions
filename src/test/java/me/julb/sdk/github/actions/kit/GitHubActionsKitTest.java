@@ -716,6 +716,26 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
+    void whenSetEmptyOutput_thenPrintCommand()
+        throws Exception {
+        this.gitHubActionsKit.setEmptyOutput("variable");
+        verify(this.systemProxyMock).println("::set-output name=variable::");
+        reset(this.systemProxyMock);
+    }
+
+    /**
+     * Test method.
+     */
+    @Test
+    void whenSetEmptyOutputNull_thenThrowNullPointerException()
+        throws Exception {
+        assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.setEmptyOutput(null));
+    }
+
+    /**
+     * Test method.
+     */
+    @Test
     void whenSetCommandEchoEnabled_thenPrintCommand()
         throws Exception {
         this.gitHubActionsKit.setCommandEcho(true);
