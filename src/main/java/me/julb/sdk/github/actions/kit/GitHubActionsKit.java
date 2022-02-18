@@ -218,6 +218,14 @@ public class GitHubActionsKit {
     }
 
     /**
+     * Sets the given output variable with an empty value.
+     * @param name the output variable name.
+     */
+    public void setEmptyOutput(@NonNull String name) {
+        issue("set-output", Map.of("name", name));
+    }
+
+    /**
      * Enables or disables the echoing of commands into STDOUT for the rest of the step.<br>
      * Echoing is disabled by default if ACTIONS_STEP_DEBUG is not set.
      * @param enabled <code>true</code> to enable, <code>false</code> otherwise.
@@ -504,6 +512,17 @@ public class GitHubActionsKit {
      */
     private <M> void issue(String command, M message) {
         issueCommand(command, Optional.empty(), Optional.of(message));
+    }
+
+    /**
+     * Issue the command with the properties.
+     * @param <P> the property value object type.
+     * @param command the command to execute.
+     * @param properties the properties to attach.
+     * @param message the message to attach.
+     */
+    private <P> void issue(String command, Map<String, P> properties) {
+        issueCommand(command, Optional.of(properties), Optional.empty());
     }
 
     /**

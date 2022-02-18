@@ -132,7 +132,7 @@ jobs:
     - name: bumping version
       id: next_vars
       run: |
-        ./mvnw validate -DchangeVersionPatch
+        ./mvnw -B validate -DchangeVersionPatch
         echo ::set-output name=next_version::$(./mvnw -q validate -DcurrentVersion)
         echo ::set-output name=next_released_version::$(./mvnw -q validate -DcurrentReleaseVersion)
 
