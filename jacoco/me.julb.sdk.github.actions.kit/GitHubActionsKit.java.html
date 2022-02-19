@@ -55,7 +55,7 @@ public class GitHubActionsKit {
      * @param name the input name.
      * @return the input value trimmed, or empty if input is not provided.
      */
-<span class="fc bfc" id="L58" title="All 2 branches covered.">    public Optional&lt;String&gt; getInput(@NonNull String name) {</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">    public Optional&lt;String&gt; getInput(@NonNull String name) {</span>
 <span class="fc" id="L59">        return getInput(name, true);</span>
     }
 
@@ -67,13 +67,7 @@ public class GitHubActionsKit {
      */
 <span class="fc bfc" id="L68" title="All 2 branches covered.">    public Optional&lt;String&gt; getInput(@NonNull String name, boolean trimValue) {</span>
 <span class="fc" id="L69">        var inputEnvProperty = &quot;INPUT_&quot; + name.replaceAll(&quot;\\s&quot;, &quot;_&quot;).toUpperCase();</span>
-<span class="fc" id="L70">        return getEnv(inputEnvProperty).map(v -&gt; {</span>
-<span class="fc bfc" id="L71" title="All 2 branches covered.">            if (trimValue) {</span>
-<span class="fc" id="L72">                return v.trim();</span>
-            } else {
-<span class="fc" id="L74">                return v;</span>
-            }
-        });
+<span class="fc bfc" id="L70" title="All 4 branches covered.">        return getEnv(inputEnvProperty).map(v -&gt; trimValue ? v.trim() : v).filter(v -&gt; !v.isBlank());</span>
     }
 
     /**
@@ -83,8 +77,8 @@ public class GitHubActionsKit {
      * @return the input value.
      * @throws NoSuchElementException if the object does not exist.
      */
-<span class="fc bfc" id="L86" title="All 2 branches covered.">    public String getRequiredInput(@NonNull String name) {</span>
-<span class="fc" id="L87">        return getInput(name).orElseThrow();</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">    public String getRequiredInput(@NonNull String name) {</span>
+<span class="fc" id="L81">        return getInput(name).orElseThrow();</span>
     }
 
     /**
@@ -95,8 +89,8 @@ public class GitHubActionsKit {
      * @return the input value or empty if input is not provided.
      * @throws NoSuchElementException if the object does not exist.
      */
-<span class="fc bfc" id="L98" title="All 2 branches covered.">    public String getRequiredInput(@NonNull String name, boolean trimValue) {</span>
-<span class="fc" id="L99">        return getInput(name, trimValue).orElseThrow();</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">    public String getRequiredInput(@NonNull String name, boolean trimValue) {</span>
+<span class="fc" id="L93">        return getInput(name, trimValue).orElseThrow();</span>
     }
 
     /**
@@ -105,15 +99,15 @@ public class GitHubActionsKit {
      * @return the input value trimmed, or empty if input is not provided.
      * @throws IllegalArgumentException if the value is not a valid boolean value.
      */
-<span class="fc bfc" id="L108" title="All 2 branches covered.">    public Optional&lt;Boolean&gt; getBooleanInput(@NonNull String name) {</span>
-<span class="fc" id="L109">        return getInput(name, true).map(s -&gt; {</span>
-<span class="fc" id="L110">            var sUpperCase = s.toLowerCase();</span>
-<span class="fc bfc" id="L111" title="All 2 branches covered.">            if (Boolean.TRUE.toString().equals(sUpperCase)) {</span>
-<span class="fc" id="L112">                return true;</span>
-<span class="fc bfc" id="L113" title="All 2 branches covered.">            } else if (Boolean.FALSE.toString().equals(sUpperCase)) {</span>
-<span class="fc" id="L114">                return false;</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">    public Optional&lt;Boolean&gt; getBooleanInput(@NonNull String name) {</span>
+<span class="fc" id="L103">        return getInput(name, true).map(s -&gt; {</span>
+<span class="fc" id="L104">            var sUpperCase = s.toLowerCase();</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">            if (Boolean.TRUE.toString().equals(sUpperCase)) {</span>
+<span class="fc" id="L106">                return true;</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">            } else if (Boolean.FALSE.toString().equals(sUpperCase)) {</span>
+<span class="fc" id="L108">                return false;</span>
             } else {
-<span class="fc" id="L116">                throw new IllegalArgumentException(s);</span>
+<span class="fc" id="L110">                throw new IllegalArgumentException(s);</span>
             }
         });
     }
@@ -126,8 +120,8 @@ public class GitHubActionsKit {
      * @throws NoSuchElementException if the object does not exist.
      * @throws IllegalArgumentException if the value is not a valid boolean value.
      */
-<span class="fc bfc" id="L129" title="All 2 branches covered.">    public Boolean getRequiredBooleanInput(@NonNull String name) {</span>
-<span class="fc" id="L130">        return getBooleanInput(name).orElseThrow();</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">    public Boolean getRequiredBooleanInput(@NonNull String name) {</span>
+<span class="fc" id="L124">        return getBooleanInput(name).orElseThrow();</span>
     }
 
     /**
@@ -138,10 +132,10 @@ public class GitHubActionsKit {
      * @return the input value as an enum, or empty if input is not provided.
      * @throws IllegalArgumentException if the value is not a valid enum value.
      */
-<span class="fc bfc" id="L141" title="All 2 branches covered.">    public &lt;T extends Enum&lt;T&gt;&gt; Optional&lt;T&gt; getEnumInput(@NonNull String name, Class&lt;T&gt; enumClass) {</span>
-<span class="fc" id="L142">        return getInput(name, true).map(s -&gt; {</span>
-<span class="fc" id="L143">            var sUpperCase = s.toUpperCase();</span>
-<span class="fc" id="L144">            return Enum.valueOf(enumClass, sUpperCase);</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">    public &lt;T extends Enum&lt;T&gt;&gt; Optional&lt;T&gt; getEnumInput(@NonNull String name, Class&lt;T&gt; enumClass) {</span>
+<span class="fc" id="L136">        return getInput(name, true).map(s -&gt; {</span>
+<span class="fc" id="L137">            var sUpperCase = s.toUpperCase();</span>
+<span class="fc" id="L138">            return Enum.valueOf(enumClass, sUpperCase);</span>
         });
     }
 
@@ -155,8 +149,8 @@ public class GitHubActionsKit {
      * @throws NoSuchElementException if the object does not exist.
      * @throws IllegalArgumentException if the value is not a valid enum value.
      */
-<span class="fc bfc" id="L158" title="All 2 branches covered.">    public &lt;T extends Enum&lt;T&gt;&gt; T getRequiredEnumInput(@NonNull String name, Class&lt;T&gt; enumClass) {</span>
-<span class="fc" id="L159">        return getEnumInput(name, enumClass).orElseThrow();</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">    public &lt;T extends Enum&lt;T&gt;&gt; T getRequiredEnumInput(@NonNull String name, Class&lt;T&gt; enumClass) {</span>
+<span class="fc" id="L153">        return getEnumInput(name, enumClass).orElseThrow();</span>
     }
 
     /**
@@ -165,8 +159,8 @@ public class GitHubActionsKit {
      * @param name the input name.
      * @return the multiline input value as an array, or empty if input is not provided.
      */
-<span class="fc bfc" id="L168" title="All 2 branches covered.">    public Optional&lt;String[]&gt; getMultilineInput(@NonNull String name) {</span>
-<span class="fc" id="L169">        return getMultilineInput(name, true);</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">    public Optional&lt;String[]&gt; getMultilineInput(@NonNull String name) {</span>
+<span class="fc" id="L163">        return getMultilineInput(name, true);</span>
     }
 
     /**
@@ -176,8 +170,8 @@ public class GitHubActionsKit {
      * @param trimValue &lt;code&gt;true&lt;/code&gt; to trim the input value, &lt;code&gt;false&lt;/code&gt; to let as-is.
      * @return the multiline input value as an array, or empty if input is not provided.
      */
-<span class="fc bfc" id="L179" title="All 2 branches covered.">    public Optional&lt;String[]&gt; getMultilineInput(@NonNull String name, boolean trimValue) {</span>
-<span class="fc bfc" id="L180" title="All 4 branches covered.">        return getInput(name, trimValue).map(String::lines).map(stream -&gt; stream.map(s -&gt; trimValue ? s.trim() : s).filter(s -&gt; !s.isBlank()).toArray(String[]::new));</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">    public Optional&lt;String[]&gt; getMultilineInput(@NonNull String name, boolean trimValue) {</span>
+<span class="fc bfc" id="L174" title="All 4 branches covered.">        return getInput(name, trimValue).map(String::lines).map(stream -&gt; stream.map(s -&gt; trimValue ? s.trim() : s).filter(s -&gt; !s.isBlank()).toArray(String[]::new));</span>
     }
 
     /**
@@ -189,8 +183,8 @@ public class GitHubActionsKit {
      * @return the multiline input value as an array.
      * @throws NoSuchElementException if the object does not exist.
      */
-<span class="fc bfc" id="L192" title="All 2 branches covered.">    public String[] getRequiredMultilineInput(@NonNull String name) {</span>
-<span class="fc" id="L193">        return getMultilineInput(name).orElseThrow();</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">    public String[] getRequiredMultilineInput(@NonNull String name) {</span>
+<span class="fc" id="L187">        return getMultilineInput(name).orElseThrow();</span>
     }
 
     /**
@@ -203,8 +197,8 @@ public class GitHubActionsKit {
      * @return the multiline input value as an array.
      * @throws NoSuchElementException if the object does not exist.
      */
-<span class="fc bfc" id="L206" title="All 2 branches covered.">    public String[] getRequiredMultilineInput(@NonNull String name, boolean trimValue) {</span>
-<span class="fc" id="L207">        return getMultilineInput(name, trimValue).orElseThrow();</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">    public String[] getRequiredMultilineInput(@NonNull String name, boolean trimValue) {</span>
+<span class="fc" id="L201">        return getMultilineInput(name, trimValue).orElseThrow();</span>
     }
 
     /**
@@ -213,17 +207,17 @@ public class GitHubActionsKit {
      * @param name the output variable name.
      * @param value the output variable value.
      */
-<span class="fc bfc" id="L216" title="All 4 branches covered.">    public &lt;T&gt; void setOutput(@NonNull String name, @NonNull T value) {</span>
-<span class="fc" id="L217">        issue(&quot;set-output&quot;, Map.of(&quot;name&quot;, name), value);</span>
-<span class="fc" id="L218">    }</span>
+<span class="fc bfc" id="L210" title="All 4 branches covered.">    public &lt;T&gt; void setOutput(@NonNull String name, @NonNull T value) {</span>
+<span class="fc" id="L211">        issue(&quot;set-output&quot;, Map.of(&quot;name&quot;, name), value);</span>
+<span class="fc" id="L212">    }</span>
 
     /**
      * Sets the given output variable with an empty value.
      * @param name the output variable name.
      */
-<span class="fc bfc" id="L224" title="All 2 branches covered.">    public void setEmptyOutput(@NonNull String name) {</span>
-<span class="fc" id="L225">        issue(&quot;set-output&quot;, Map.of(&quot;name&quot;, name));</span>
-<span class="fc" id="L226">    }</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">    public void setEmptyOutput(@NonNull String name) {</span>
+<span class="fc" id="L219">        issue(&quot;set-output&quot;, Map.of(&quot;name&quot;, name));</span>
+<span class="fc" id="L220">    }</span>
 
     /**
      * Enables or disables the echoing of commands into STDOUT for the rest of the step.&lt;br&gt;
@@ -231,31 +225,31 @@ public class GitHubActionsKit {
      * @param enabled &lt;code&gt;true&lt;/code&gt; to enable, &lt;code&gt;false&lt;/code&gt; otherwise.
      */
     public void setCommandEcho(boolean enabled) {
-<span class="fc bfc" id="L234" title="All 2 branches covered.">        issue(&quot;echo&quot;, enabled ? &quot;on&quot; : &quot;off&quot;);</span>
-<span class="fc" id="L235">    }</span>
+<span class="fc bfc" id="L228" title="All 2 branches covered.">        issue(&quot;echo&quot;, enabled ? &quot;on&quot; : &quot;off&quot;);</span>
+<span class="fc" id="L229">    }</span>
 
     /**
      * Starts a group with the given name.&lt;br&gt;
      * Output until the call to {@link #endGroup()} will be foldable.
      * @param name the name of the group.
      */
-<span class="fc bfc" id="L242" title="All 2 branches covered.">    public void startGroup(@NonNull String name) {</span>
-<span class="fc" id="L243">        issue(&quot;group&quot;, name);</span>
-<span class="fc" id="L244">    }</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">    public void startGroup(@NonNull String name) {</span>
+<span class="fc" id="L237">        issue(&quot;group&quot;, name);</span>
+<span class="fc" id="L238">    }</span>
 
     /**
      * Executes the given {@link Runnable} in a group.
      * @param name the group name.
      * @param exec the {@link Runnable} to execute within the group.
      */
-<span class="fc bfc" id="L251" title="All 4 branches covered.">    public void group(@NonNull String name, @NonNull Runnable exec) {</span>
-<span class="fc" id="L252">        startGroup(name);</span>
+<span class="fc bfc" id="L245" title="All 4 branches covered.">    public void group(@NonNull String name, @NonNull Runnable exec) {</span>
+<span class="fc" id="L246">        startGroup(name);</span>
         try {
-<span class="fc" id="L254">            exec.run();</span>
+<span class="fc" id="L248">            exec.run();</span>
         } finally {
-<span class="fc" id="L256">            endGroup();</span>
+<span class="fc" id="L250">            endGroup();</span>
         }
-<span class="fc" id="L258">    }</span>
+<span class="fc" id="L252">    }</span>
 
     /**
      * Executes the given callable in a group.
@@ -265,13 +259,13 @@ public class GitHubActionsKit {
      * @return the result returned by the {@link Callable}.
      * @throws Exception propagate as-is the exception thrown by the {@link Callable}.
      */
-<span class="fc bfc" id="L268" title="All 4 branches covered.">    public &lt;T&gt; T group(@NonNull String name, @NonNull Callable&lt;T&gt; exec)</span>
+<span class="fc bfc" id="L262" title="All 4 branches covered.">    public &lt;T&gt; T group(@NonNull String name, @NonNull Callable&lt;T&gt; exec)</span>
         throws Exception {
-<span class="fc" id="L270">        startGroup(name);</span>
+<span class="fc" id="L264">        startGroup(name);</span>
         try {
-<span class="fc" id="L272">            return exec.call();</span>
+<span class="fc" id="L266">            return exec.call();</span>
         } finally {
-<span class="fc" id="L274">            endGroup();</span>
+<span class="fc" id="L268">            endGroup();</span>
         }
     }
 
@@ -279,8 +273,8 @@ public class GitHubActionsKit {
      * Ends a group.
      */
     public void endGroup() {
-<span class="fc" id="L282">        issue(&quot;endgroup&quot;);</span>
-<span class="fc" id="L283">    }</span>
+<span class="fc" id="L276">        issue(&quot;endgroup&quot;);</span>
+<span class="fc" id="L277">    }</span>
 
     /**
      * Saves the state for current action, the state can only be retrieved by this action's post job execution.
@@ -288,18 +282,18 @@ public class GitHubActionsKit {
      * @param name the state variable name.
      * @param value the state variable value.
      */
-<span class="fc bfc" id="L291" title="All 4 branches covered.">    public &lt;T&gt; void saveState(@NonNull String name, @NonNull T value) {</span>
-<span class="fc" id="L292">        issue(&quot;save-state&quot;, Map.of(&quot;name&quot;, name), value);</span>
-<span class="fc" id="L293">    }</span>
+<span class="fc bfc" id="L285" title="All 4 branches covered.">    public &lt;T&gt; void saveState(@NonNull String name, @NonNull T value) {</span>
+<span class="fc" id="L286">        issue(&quot;save-state&quot;, Map.of(&quot;name&quot;, name), value);</span>
+<span class="fc" id="L287">    }</span>
 
     /**
      * Gets the value of an state set by this action's main execution.
      * @param name the state variable name.
      * @return the state value or empty if state is not set.
      */
-<span class="fc bfc" id="L300" title="All 2 branches covered.">    public Optional&lt;String&gt; getState(@NonNull String name) {</span>
-<span class="fc" id="L301">        var stateEnvProperty = &quot;STATE_&quot; + name.replaceAll(&quot;\\s&quot;, &quot;_&quot;).toUpperCase();</span>
-<span class="fc" id="L302">        return getEnv(stateEnvProperty);</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">    public Optional&lt;String&gt; getState(@NonNull String name) {</span>
+<span class="fc" id="L295">        var stateEnvProperty = &quot;STATE_&quot; + name.replaceAll(&quot;\\s&quot;, &quot;_&quot;).toUpperCase();</span>
+<span class="fc" id="L296">        return getEnv(stateEnvProperty);</span>
     }
 
     /**
@@ -307,85 +301,85 @@ public class GitHubActionsKit {
      * @param &lt;T&gt; the secret value object type.
      * @param value the secret value.
      */
-<span class="fc bfc" id="L310" title="All 2 branches covered.">    public &lt;T&gt; void setSecret(@NonNull T value) {</span>
-<span class="fc" id="L311">        issue(&quot;add-mask&quot;, value);</span>
-<span class="fc" id="L312">    }</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">    public &lt;T&gt; void setSecret(@NonNull T value) {</span>
+<span class="fc" id="L305">        issue(&quot;add-mask&quot;, value);</span>
+<span class="fc" id="L306">    }</span>
 
     /**
      * Returns &lt;code&gt;true&lt;/code&gt; if DEBUG mode is enabled in the runner, &lt;code&gt;false&lt;/code&gt; otherwise.
      * @return &lt;code&gt;true&lt;/code&gt; if DEBUG mode is enabled in the runner, &lt;code&gt;false&lt;/code&gt; otherwise.
      */
     public boolean isDebug() {
-<span class="fc" id="L319">        return getEnv(&quot;RUNNER_DEBUG&quot;).map(v -&gt; v.equals(&quot;1&quot;)).orElse(false);</span>
+<span class="fc" id="L313">        return getEnv(&quot;RUNNER_DEBUG&quot;).map(v -&gt; v.equals(&quot;1&quot;)).orElse(false);</span>
     }
 
     /**
      * Prints a &lt;code&gt;DEBUG&lt;/code&gt; message to user log.
      * @param message the message.
      */
-<span class="fc bfc" id="L326" title="All 2 branches covered.">    public void debug(@NonNull String message) {</span>
-<span class="fc" id="L327">        issue(&quot;debug&quot;, message);</span>
-<span class="fc" id="L328">    }</span>
+<span class="fc bfc" id="L320" title="All 2 branches covered.">    public void debug(@NonNull String message) {</span>
+<span class="fc" id="L321">        issue(&quot;debug&quot;, message);</span>
+<span class="fc" id="L322">    }</span>
 
     /**
      * Prints a &lt;code&gt;NOTICE&lt;/code&gt; message to user log.
      * @param message the message.
      */
-<span class="fc bfc" id="L334" title="All 2 branches covered.">    public void notice(@NonNull String message) {</span>
-<span class="fc" id="L335">        notice(message, Optional.empty());</span>
-<span class="fc" id="L336">    }</span>
+<span class="fc bfc" id="L328" title="All 2 branches covered.">    public void notice(@NonNull String message) {</span>
+<span class="fc" id="L329">        notice(message, Optional.empty());</span>
+<span class="fc" id="L330">    }</span>
 
     /**
      * Prints a &lt;code&gt;NOTICE&lt;/code&gt; message to user log.
      * @param message the message.
      * @param properties the annotations to add to the message.
      */
-<span class="fc bfc" id="L343" title="All 4 branches covered.">    public void notice(@NonNull String message, @NonNull Optional&lt;AnnotationProperties&gt; properties) {</span>
-<span class="fc" id="L344">        issue(&quot;notice&quot;, properties.map(AnnotationProperties::toMap).orElse(Map.of()), message);</span>
-<span class="fc" id="L345">    }</span>
+<span class="fc bfc" id="L337" title="All 4 branches covered.">    public void notice(@NonNull String message, @NonNull Optional&lt;AnnotationProperties&gt; properties) {</span>
+<span class="fc" id="L338">        issue(&quot;notice&quot;, properties.map(AnnotationProperties::toMap).orElse(Map.of()), message);</span>
+<span class="fc" id="L339">    }</span>
 
     /**
      * Prints a &lt;code&gt;WARNING&lt;/code&gt; message to user log.
      * @param message the message.
      */
-<span class="fc bfc" id="L351" title="All 2 branches covered.">    public void warning(@NonNull String message) {</span>
-<span class="fc" id="L352">        warning(message, Optional.empty());</span>
-<span class="fc" id="L353">    }</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">    public void warning(@NonNull String message) {</span>
+<span class="fc" id="L346">        warning(message, Optional.empty());</span>
+<span class="fc" id="L347">    }</span>
 
     /**
      * Prints a &lt;code&gt;WARNING&lt;/code&gt; message to user log.
      * @param message the message.
      * @param properties the annotations to add to the message.
      */
-<span class="fc bfc" id="L360" title="All 4 branches covered.">    public void warning(@NonNull String message, @NonNull Optional&lt;AnnotationProperties&gt; properties) {</span>
-<span class="fc" id="L361">        issue(&quot;warning&quot;, properties.map(AnnotationProperties::toMap).orElse(Map.of()), message);</span>
-<span class="fc" id="L362">    }</span>
+<span class="fc bfc" id="L354" title="All 4 branches covered.">    public void warning(@NonNull String message, @NonNull Optional&lt;AnnotationProperties&gt; properties) {</span>
+<span class="fc" id="L355">        issue(&quot;warning&quot;, properties.map(AnnotationProperties::toMap).orElse(Map.of()), message);</span>
+<span class="fc" id="L356">    }</span>
 
     /**
      * Prints a &lt;code&gt;ERROR&lt;/code&gt; message to user log.
      * @param message the message.
      */
-<span class="fc bfc" id="L368" title="All 2 branches covered.">    public void error(@NonNull String message) {</span>
-<span class="fc" id="L369">        error(message, Optional.empty());</span>
-<span class="fc" id="L370">    }</span>
+<span class="fc bfc" id="L362" title="All 2 branches covered.">    public void error(@NonNull String message) {</span>
+<span class="fc" id="L363">        error(message, Optional.empty());</span>
+<span class="fc" id="L364">    }</span>
 
     /**
      * Prints a &lt;code&gt;ERROR&lt;/code&gt; message to user log with given annotation properties.
      * @param message the message.
      * @param properties the annotations to add to the message.
      */
-<span class="fc bfc" id="L377" title="All 4 branches covered.">    public void error(@NonNull String message, @NonNull Optional&lt;AnnotationProperties&gt; properties) {</span>
-<span class="fc" id="L378">        issue(&quot;error&quot;, properties.map(AnnotationProperties::toMap).orElse(Map.of()), message);</span>
-<span class="fc" id="L379">    }</span>
+<span class="fc bfc" id="L371" title="All 4 branches covered.">    public void error(@NonNull String message, @NonNull Optional&lt;AnnotationProperties&gt; properties) {</span>
+<span class="fc" id="L372">        issue(&quot;error&quot;, properties.map(AnnotationProperties::toMap).orElse(Map.of()), message);</span>
+<span class="fc" id="L373">    }</span>
 
     /**
      * Fails the process with the given message.
      * @param message the error message.
      */
-<span class="fc bfc" id="L385" title="All 2 branches covered.">    public void fail(@NonNull String message) {</span>
-<span class="fc" id="L386">        error(message);</span>
-<span class="fc" id="L387">        this.systemProxy.exit(1);</span>
-<span class="fc" id="L388">    }</span>
+<span class="fc bfc" id="L379" title="All 2 branches covered.">    public void fail(@NonNull String message) {</span>
+<span class="fc" id="L380">        error(message);</span>
+<span class="fc" id="L381">        this.systemProxy.exit(1);</span>
+<span class="fc" id="L382">    }</span>
 
     /**
      * Returns the owner and repository name. For example, &lt;code&gt;octocat/Hello-World&lt;/code&gt;. See &lt;code&gt;GITHUB_REPOSITORY&lt;/code&gt;.
@@ -393,7 +387,7 @@ public class GitHubActionsKit {
      * @throws NoSuchElementException if the object does not exist.
      */
     public String getGitHubRepository() {
-<span class="fc" id="L396">        return getEnv(&quot;GITHUB_REPOSITORY&quot;).orElseThrow();</span>
+<span class="fc" id="L390">        return getEnv(&quot;GITHUB_REPOSITORY&quot;).orElseThrow();</span>
     }
 
     /**
@@ -402,7 +396,7 @@ public class GitHubActionsKit {
      * @throws NoSuchElementException if the object does not exist.
      */
     public String getGitHubRefType() {
-<span class="fc" id="L405">        return getEnv(&quot;GITHUB_REF_TYPE&quot;).orElseThrow();</span>
+<span class="fc" id="L399">        return getEnv(&quot;GITHUB_REF_TYPE&quot;).orElseThrow();</span>
     }
 
     /**
@@ -411,7 +405,7 @@ public class GitHubActionsKit {
      * @throws NoSuchElementException if the object does not exist.
      */
     public boolean isGitHubRefTypeBranch() {
-<span class="fc" id="L414">        return getGitHubRefType().equalsIgnoreCase(&quot;branch&quot;);</span>
+<span class="fc" id="L408">        return getGitHubRefType().equalsIgnoreCase(&quot;branch&quot;);</span>
     }
 
     /**
@@ -420,7 +414,7 @@ public class GitHubActionsKit {
      * @throws NoSuchElementException if the object does not exist.
      */
     public boolean isGitHubRefTypeTag() {
-<span class="fc" id="L423">        return getGitHubRefType().equalsIgnoreCase(&quot;tag&quot;);</span>
+<span class="fc" id="L417">        return getGitHubRefType().equalsIgnoreCase(&quot;tag&quot;);</span>
     }
 
     /**
@@ -429,7 +423,7 @@ public class GitHubActionsKit {
      * @throws NoSuchElementException if the object does not exist.
      */
     public String getGitHubRef() {
-<span class="fc" id="L432">        return getEnv(&quot;GITHUB_REF&quot;).orElseThrow();</span>
+<span class="fc" id="L426">        return getEnv(&quot;GITHUB_REF&quot;).orElseThrow();</span>
     }
 
     /**
@@ -438,7 +432,7 @@ public class GitHubActionsKit {
      * @throws NoSuchElementException if the object does not exist.
      */
     public String getGitHubRefName() {
-<span class="fc" id="L441">        return getEnv(&quot;GITHUB_REF_NAME&quot;).orElseThrow();</span>
+<span class="fc" id="L435">        return getEnv(&quot;GITHUB_REF_NAME&quot;).orElseThrow();</span>
     }
 
     /**
@@ -447,7 +441,7 @@ public class GitHubActionsKit {
      * @throws NoSuchElementException if the object does not exist.
      */
     public String getGitHubSha() {
-<span class="fc" id="L450">        return getEnv(&quot;GITHUB_SHA&quot;).orElseThrow();</span>
+<span class="fc" id="L444">        return getEnv(&quot;GITHUB_SHA&quot;).orElseThrow();</span>
     }
 
     /**
@@ -456,8 +450,8 @@ public class GitHubActionsKit {
      * @throws NoSuchElementException if the object does not exist.
      */
     public String getGitHubAbbreviatedSha() {
-<span class="fc" id="L459">        var sha = getGitHubSha();</span>
-<span class="fc" id="L460">        return sha.substring(0, Math.min(7, sha.length()));</span>
+<span class="fc" id="L453">        var sha = getGitHubSha();</span>
+<span class="fc" id="L454">        return sha.substring(0, Math.min(7, sha.length()));</span>
     }
 
     /**
@@ -466,7 +460,7 @@ public class GitHubActionsKit {
      * @throws NoSuchElementException if the object does not exist.
      */
     public String getGitHubRunId() {
-<span class="fc" id="L469">        return getEnv(&quot;GITHUB_RUN_ID&quot;).orElseThrow();</span>
+<span class="fc" id="L463">        return getEnv(&quot;GITHUB_RUN_ID&quot;).orElseThrow();</span>
     }
 
     /**
@@ -475,7 +469,7 @@ public class GitHubActionsKit {
      * @throws NoSuchElementException if the object does not exist.
      */
     public String getGitHubApiUrl() {
-<span class="fc" id="L478">        return getEnv(&quot;GITHUB_API_URL&quot;).orElseThrow();</span>
+<span class="fc" id="L472">        return getEnv(&quot;GITHUB_API_URL&quot;).orElseThrow();</span>
     }
 
     /**
@@ -483,8 +477,8 @@ public class GitHubActionsKit {
      * @param name the environment variable name.
      * @return the value if the environment variable exists, or {@link Optional#empty()}.
      */
-<span class="fc bfc" id="L486" title="All 2 branches covered.">    public Optional&lt;String&gt; getEnv(@NonNull String name) {</span>
-<span class="fc" id="L487">        return Optional.ofNullable(this.systemProxy.getenv(name));</span>
+<span class="fc bfc" id="L480" title="All 2 branches covered.">    public Optional&lt;String&gt; getEnv(@NonNull String name) {</span>
+<span class="fc" id="L481">        return Optional.ofNullable(this.systemProxy.getenv(name));</span>
     }
 
     /**
@@ -492,8 +486,8 @@ public class GitHubActionsKit {
      * @param name the environment variable name.
      * @return the value if the environment variable exists, or {@link Optional#empty()}.
      */
-<span class="fc bfc" id="L495" title="All 2 branches covered.">    public String getRequiredEnv(@NonNull String name) {</span>
-<span class="fc" id="L496">        return getEnv(name).orElseThrow();</span>
+<span class="fc bfc" id="L489" title="All 2 branches covered.">    public String getRequiredEnv(@NonNull String name) {</span>
+<span class="fc" id="L490">        return getEnv(name).orElseThrow();</span>
     }
 
     /**
@@ -501,8 +495,8 @@ public class GitHubActionsKit {
      * @param command the command to execute.
      */
     private void issue(String command) {
-<span class="fc" id="L504">        issueCommand(command, Optional.empty(), Optional.empty());</span>
-<span class="fc" id="L505">    }</span>
+<span class="fc" id="L498">        issueCommand(command, Optional.empty(), Optional.empty());</span>
+<span class="fc" id="L499">    }</span>
 
     /**
      * Issues the command with the message.
@@ -511,8 +505,8 @@ public class GitHubActionsKit {
      * @param message the message to attach.
      */
     private &lt;M&gt; void issue(String command, M message) {
-<span class="fc" id="L514">        issueCommand(command, Optional.empty(), Optional.of(message));</span>
-<span class="fc" id="L515">    }</span>
+<span class="fc" id="L508">        issueCommand(command, Optional.empty(), Optional.of(message));</span>
+<span class="fc" id="L509">    }</span>
 
     /**
      * Issue the command with the properties.
@@ -522,8 +516,8 @@ public class GitHubActionsKit {
      * @param message the message to attach.
      */
     private &lt;P&gt; void issue(String command, Map&lt;String, P&gt; properties) {
-<span class="fc" id="L525">        issueCommand(command, Optional.of(properties), Optional.empty());</span>
-<span class="fc" id="L526">    }</span>
+<span class="fc" id="L519">        issueCommand(command, Optional.of(properties), Optional.empty());</span>
+<span class="fc" id="L520">    }</span>
 
     /**
      * Issue the command with the properties and the message.
@@ -534,8 +528,8 @@ public class GitHubActionsKit {
      * @param message the message to attach.
      */
     private &lt;P, M&gt; void issue(String command, Map&lt;String, P&gt; properties, M message) {
-<span class="fc" id="L537">        issueCommand(command, Optional.of(properties), Optional.of(message));</span>
-<span class="fc" id="L538">    }</span>
+<span class="fc" id="L531">        issueCommand(command, Optional.of(properties), Optional.of(message));</span>
+<span class="fc" id="L532">    }</span>
 
     /**
      * Implementation of the process to issue the command with the properties and the message.
@@ -546,8 +540,8 @@ public class GitHubActionsKit {
      * @param message the message to attach.
      */
     private &lt;P, M&gt; void issueCommand(String command, Optional&lt;Map&lt;String, P&gt;&gt; properties, Optional&lt;M&gt; message) {
-<span class="fc" id="L549">        this.systemProxy.println(new ExecCommand&lt;&gt;(command, properties, message).toString());</span>
-<span class="fc" id="L550">    }</span>
+<span class="fc" id="L543">        this.systemProxy.println(new ExecCommand&lt;&gt;(command, properties, message).toString());</span>
+<span class="fc" id="L544">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
