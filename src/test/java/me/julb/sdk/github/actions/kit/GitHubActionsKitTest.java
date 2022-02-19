@@ -38,6 +38,9 @@ import java.util.concurrent.Callable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -99,7 +102,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetInputAbsent_thenReturnEmpty()
+    void whenGetInputAbsentNull_thenReturnEmpty()
         throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(null);
         var testInput = this.gitHubActionsKit.getInput("test");
@@ -110,20 +113,13 @@ class GitHubActionsKitTest {
     /**
      * Test method.
      */
-    @Test
-    void whenGetInputNull_thenThrowNullPointerException()
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"  "})
+    void whenGetInputAbsentNullEmptyBlankString_thenReturnEmpty(String absentEnvValue)
         throws Exception {
-        assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getInput(null));
-    }
-
-    /**
-     * Test method.
-     */
-    @Test
-    void whenGetInputTrimAbsent_thenReturnEmpty()
-        throws Exception {
-        when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(null);
-        var testInput = this.gitHubActionsKit.getInput("test", true);
+        when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(absentEnvValue);
+        var testInput = this.gitHubActionsKit.getInput("test");
         assertThat(testInput).isEmpty();
         verify(this.systemProxyMock).getenv("INPUT_TEST");
     }

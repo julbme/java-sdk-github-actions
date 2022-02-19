@@ -67,13 +67,7 @@ public class GitHubActionsKit {
      */
     public Optional<String> getInput(@NonNull String name, boolean trimValue) {
         var inputEnvProperty = "INPUT_" + name.replaceAll("\\s", "_").toUpperCase();
-        return getEnv(inputEnvProperty).map(v -> {
-            if (trimValue) {
-                return v.trim();
-            } else {
-                return v;
-            }
-        });
+        return getEnv(inputEnvProperty).map(v -> trimValue ? v.trim() : v).filter(v -> !v.isBlank());
     }
 
     /**
