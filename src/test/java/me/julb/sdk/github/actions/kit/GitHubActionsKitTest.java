@@ -128,6 +128,15 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
+    void whenGetInputNull_thenThrowNullPointerException()
+        throws Exception {
+        assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getInput(null));
+    }
+
+    /**
+     * Test method.
+     */
+    @Test
     void whenGetInputTrimTruePresent_thenReturnValueTrimmed()
         throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" value ");
@@ -726,6 +735,39 @@ class GitHubActionsKitTest {
     void whenSetEmptyOutputNull_thenThrowNullPointerException()
         throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.setEmptyOutput(null));
+    }
+
+    /**
+     * Test method.
+     */
+    @Test
+    void whenSetOptionalOutputPresent_thenPrintCommand()
+        throws Exception {
+        this.gitHubActionsKit.setOptionalOutput("variable", Optional.of("value"));
+        verify(this.systemProxyMock).println("::set-output name=variable::value");
+        reset(this.systemProxyMock);
+    }
+
+    /**
+     * Test method.
+     */
+    @Test
+    void whenSetOptionalOutputEmpty_thenPrintCommand()
+        throws Exception {
+        this.gitHubActionsKit.setOptionalOutput("variable", Optional.empty());
+        verify(this.systemProxyMock).println("::set-output name=variable::");
+        reset(this.systemProxyMock);
+    }
+
+    /**
+     * Test method.
+     */
+    @Test
+    void whenSetOptionalOutputNull_thenThrowNullPointerException()
+        throws Exception {
+        var emptyOpt = Optional.empty();
+        assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.setOptionalOutput(null, emptyOpt));
+        assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.setOptionalOutput("variable", null));
     }
 
     /**
