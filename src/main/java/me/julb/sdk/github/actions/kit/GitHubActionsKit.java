@@ -212,6 +212,16 @@ public class GitHubActionsKit {
     }
 
     /**
+     * Sets the given output variable.
+     * @param <T> the output object type.
+     * @param name the output variable name.
+     * @param value the output variable value.
+     */
+    public <T> void setOptionalOutput(@NonNull String name, @NonNull Optional<T> value) {
+        value.ifPresentOrElse(v -> setOutput(name, v), () -> setEmptyOutput(name));
+    }
+
+    /**
      * Sets the given output variable with an empty value.
      * @param name the output variable name.
      */
