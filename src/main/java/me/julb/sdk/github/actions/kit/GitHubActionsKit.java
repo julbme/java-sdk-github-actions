@@ -23,10 +23,12 @@
  */
 package me.julb.sdk.github.actions.kit;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.Callable;
+import java.util.regex.Pattern;
 
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -43,6 +45,16 @@ public class GitHubActionsKit {
      * The public instance to use.
      */
     public static final GitHubActionsKit INSTANCE = new GitHubActionsKit(new SystemProxySystemImpl());
+
+    /**
+     * The pattern to match whitespace characters.
+     */
+    private static final Pattern WHITESPACE_CHARACTER_PATTERN = Pattern.compile("\\s");
+
+    /**
+     * The length of the abbreviated Git SHA.
+     */
+    private static final int ABBREVIATED_SHA_LENGTH = 7;
 
     /**
      * An interface proxifying {@link java.lang.System} calls.
@@ -65,8 +77,17 @@ public class GitHubActionsKit {
      * @return the input value or empty if input is not provided.
      */
     public Optional<String> getInput(@NonNull String name, boolean trimValue) {
-        var inputEnvProperty = "INPUT_" + name.replaceAll("\\s", "_").toUpperCase();
-        return getEnv(inputEnvProperty).map(v -> trimValue ? v.trim() : v).filter(v -> !v.isBlank());
+        var inputEnvProperty = "INPUT_"
+                + WHITESPACE_CHARACTER_PATTERN.matcher(name).replaceAll("_").toUpperCase(Locale.ROOT);
+        return getEnv(inputEnvProperty)
+                .map((String v) -> {
+                    if (trimValue) {
+                        return v.trim();
+                    } else {
+                        return v;
+                    }
+                })
+                .filter(v -> !v.isBlank());
     }
 
     /**
@@ -99,11 +120,11 @@ public class GitHubActionsKit {
      * @throws IllegalArgumentException if the value is not a valid boolean value.
      */
     public Optional<Boolean> getBooleanInput(@NonNull String name) {
-        return getInput(name, true).map(s -> {
-            var sUpperCase = s.toLowerCase();
-            if (Boolean.TRUE.toString().equals(sUpperCase)) {
+        return getInput(name, true).map((String s) -> {
+            var sLowerCase = s.toLowerCase(Locale.ROOT);
+            if (Boolean.TRUE.toString().equals(sLowerCase)) {
                 return true;
-            } else if (Boolean.FALSE.toString().equals(sUpperCase)) {
+            } else if (Boolean.FALSE.toString().equals(sLowerCase)) {
                 return false;
             } else {
                 throw new IllegalArgumentException(s);
@@ -132,8 +153,8 @@ public class GitHubActionsKit {
      * @throws IllegalArgumentException if the value is not a valid enum value.
      */
     public <T extends Enum<T>> Optional<T> getEnumInput(@NonNull String name, Class<T> enumClass) {
-        return getInput(name, true).map(s -> {
-            var sUpperCase = s.toUpperCase();
+        return getInput(name, true).map((String s) -> {
+            var sUpperCase = s.toUpperCase(Locale.ROOT);
             return Enum.valueOf(enumClass, sUpperCase);
         });
     }
@@ -170,7 +191,13 @@ public class GitHubActionsKit {
      * @return the multiline input value as an array, or empty if input is not provided.
      */
     public Optional<String[]> getMultilineInput(@NonNull String name, boolean trimValue) {
-        return getInput(name, trimValue).map(String::lines).map(stream -> stream.map(s -> trimValue ? s.trim() : s)
+        return getInput(name, trimValue).map(String::lines).map(stream -> stream.map((String s) -> {
+                    if (trimValue) {
+                        return s.trim();
+                    } else {
+                        return s;
+                    }
+                })
                 .filter(s -> !s.isBlank())
                 .toArray(String[]::new));
     }
@@ -236,7 +263,11 @@ public class GitHubActionsKit {
      * @param enabled <code>true</code> to enable, <code>false</code> otherwise.
      */
     public void setCommandEcho(boolean enabled) {
-        issue("echo", enabled ? "on" : "off");
+        if (enabled) {
+            issue("echo", "on");
+        } else {
+            issue("echo", "off");
+        }
     }
 
     /**
@@ -302,7 +333,8 @@ public class GitHubActionsKit {
      * @return the state value or empty if state is not set.
      */
     public Optional<String> getState(@NonNull String name) {
-        var stateEnvProperty = "STATE_" + name.replaceAll("\\s", "_").toUpperCase();
+        var stateEnvProperty = "STATE_"
+                + WHITESPACE_CHARACTER_PATTERN.matcher(name).replaceAll("_").toUpperCase(Locale.ROOT);
         return getEnv(stateEnvProperty);
     }
 
@@ -320,7 +352,7 @@ public class GitHubActionsKit {
      * @return <code>true</code> if DEBUG mode is enabled in the runner, <code>false</code> otherwise.
      */
     public boolean isDebug() {
-        return getEnv("RUNNER_DEBUG").map(v -> v.equals("1")).orElse(false);
+        return getEnv("RUNNER_DEBUG").map("1"::equals).orElse(false);
     }
 
     /**
@@ -392,8 +424,10 @@ public class GitHubActionsKit {
     }
 
     /**
-     * Returns the owner and repository name. For example, <code>octocat/Hello-World</code>. See <code>GITHUB_REPOSITORY</code>.
-     * @return the owner and repository name. For example, <code>octocat/Hello-World</code>. See <code>GITHUB_REPOSITORY</code>.
+     * Returns the owner and repository name.
+     * For example, <code>octocat/Hello-World</code>. See <code>GITHUB_REPOSITORY</code>.
+     * @return the owner and repository name. For example, <code>octocat/Hello-World</code>.
+     *  See <code>GITHUB_REPOSITORY</code>.
      * @throws NoSuchElementException if the object does not exist.
      */
     public String getGitHubRepository() {
@@ -401,8 +435,10 @@ public class GitHubActionsKit {
     }
 
     /**
-     * Returns the type of ref that triggered the workflow run. Valid values are <code>branch</code> or <code>tag</code>. See <code>GITHUB_REF_TYPE</code>.
-     * @return the type of ref that triggered the workflow run. Valid values are <code>branch</code> or <code>tag</code>. See <code>GITHUB_REF_TYPE</code>.
+     * Returns the type of ref that triggered the workflow run.
+     * Valid values are <code>branch</code> or <code>tag</code>. See <code>GITHUB_REF_TYPE</code>.
+     * @return the type of ref that triggered the workflow run. Valid values are <code>branch</code> or
+     *  <code>tag</code>. See <code>GITHUB_REF_TYPE</code>.
      * @throws NoSuchElementException if the object does not exist.
      */
     public String getGitHubRefType() {
@@ -410,21 +446,25 @@ public class GitHubActionsKit {
     }
 
     /**
-     * Returns <code>true</code> if the type of ref that triggered the workflow run is <code>branch</code>. See <code>GITHUB_REF_TYPE</code>.
-     * @return <code>true</code> if the type of ref that triggered the workflow run is <code>branch</code>. See <code>GITHUB_REF_TYPE</code>.
+     * Returns <code>true</code> if the type of ref that triggered the workflow run is <code>branch</code>.
+     * See <code>GITHUB_REF_TYPE</code>.
+     * @return <code>true</code> if the type of ref that triggered the workflow run is <code>branch</code>.
+     *  See <code>GITHUB_REF_TYPE</code>.
      * @throws NoSuchElementException if the object does not exist.
      */
     public boolean isGitHubRefTypeBranch() {
-        return getGitHubRefType().equalsIgnoreCase("branch");
+        return "branch".equalsIgnoreCase(getGitHubRefType());
     }
 
     /**
-     * Returns <code>true</code> if the type of ref that triggered the workflow run is <code>tag</code>. See <code>GITHUB_REF_TYPE</code>.
-     * @return <code>true</code> if the type of ref that triggered the workflow run is <code>tag</code>. See <code>GITHUB_REF_TYPE</code>.
+     * Returns <code>true</code> if the type of ref that triggered the workflow run is <code>tag</code>.
+     * See <code>GITHUB_REF_TYPE</code>.
+     * @return <code>true</code> if the type of ref that triggered the workflow run is <code>tag</code>.
+     *  See <code>GITHUB_REF_TYPE</code>.
      * @throws NoSuchElementException if the object does not exist.
      */
     public boolean isGitHubRefTypeTag() {
-        return getGitHubRefType().equalsIgnoreCase("tag");
+        return "tag".equalsIgnoreCase(getGitHubRefType());
     }
 
     /**
@@ -461,7 +501,7 @@ public class GitHubActionsKit {
      */
     public String getGitHubAbbreviatedSha() {
         var sha = getGitHubSha();
-        return sha.substring(0, Math.min(7, sha.length()));
+        return sha.substring(0, Math.min(ABBREVIATED_SHA_LENGTH, sha.length()));
     }
 
     /**

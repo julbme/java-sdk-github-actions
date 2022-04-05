@@ -76,11 +76,10 @@ class ExecCommand<P, M> {
         sb.append(this.name);
 
         // Add properties
-        this.properties.ifPresent(map -> {
+        this.properties.ifPresent((Map<String, P> map) -> {
             if (!map.isEmpty()) {
                 var propertiesAsList = map.entrySet().stream()
-                        .map(entry -> String.format(
-                                "%s=%s", entry.getKey(), escapePropertyValue(Optional.ofNullable(entry.getValue()))))
+                        .map(entry -> String.format("%s=%s", entry.getKey(), escapePropertyValue(entry.getValue())))
                         .toList();
                 sb.append(" ").append(String.join(",", propertiesAsList));
             }
@@ -88,7 +87,7 @@ class ExecCommand<P, M> {
 
         // Add message
         sb.append(CMD_STRING);
-        sb.append(escapeMessage(this.message));
+        sb.append(escapeMessage(this.message.orElse(null)));
 
         return sb.toString();
     }
@@ -98,8 +97,8 @@ class ExecCommand<P, M> {
      * @param message the message value.
      * @return the message with special characters escaped.
      */
-    private static <T> String escapePropertyValue(Optional<T> propertyValue) {
-        return propertyValue
+    private static <T> String escapePropertyValue(T propertyValue) {
+        return Optional.ofNullable(propertyValue)
                 .map(Object::toString)
                 .orElse("")
                 .replace("%", "%25")
@@ -114,8 +113,9 @@ class ExecCommand<P, M> {
      * @param message the message value.
      * @return the message with special characters escaped.
      */
-    private static <T> String escapeMessage(Optional<T> message) {
-        return message.map(Object::toString)
+    private static <T> String escapeMessage(T message) {
+        return Optional.ofNullable(message)
+                .map(Object::toString)
                 .orElse("")
                 .replace("%", "%25")
                 .replace("\r", "%0D")

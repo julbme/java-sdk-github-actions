@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 /**
@@ -34,6 +35,7 @@ import lombok.Builder;
  * @author Julb.
  */
 @Builder
+@AllArgsConstructor
 public class AnnotationProperties {
 
     // @formatter:off
@@ -103,7 +105,9 @@ public class AnnotationProperties {
 
     // @formatter:off
     /**
-     * The start column for the annotation. Cannot be sent when `startLine` and `endLine` are different values. Defaults to `startColumn` when `startColumn` is provided.
+     * The start column for the annotation.
+     * Cannot be sent when `startLine` and `endLine` are different values.
+     * Defaults to `startColumn` when `startColumn` is provided.
      * -- GETTER --
      * Getter for {@link #endColumn} property.
      * @return the value.

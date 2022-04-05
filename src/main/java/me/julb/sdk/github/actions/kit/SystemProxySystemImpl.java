@@ -25,6 +25,7 @@ package me.julb.sdk.github.actions.kit;
 
 /**
  * The class using {@link java.lang.System} functions to implement {@link SystemProxy}. <br>
+ * Among these functions, there all helpers to get env variables, print messages to STDOUT and exit the program.
  * @author Julb.
  */
 class SystemProxySystemImpl implements SystemProxy {
