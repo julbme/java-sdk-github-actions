@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package me.julb.sdk.github.actions.kit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -74,8 +73,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenInstanceRequired_thenReturnInstance()
-        throws Exception {
+    void whenInstanceRequired_thenReturnInstance() throws Exception {
         assertThat(GitHubActionsKit.INSTANCE).isNotNull();
     }
 
@@ -83,8 +81,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetInputPresent_thenReturnValue()
-        throws Exception {
+    void whenGetInputPresent_thenReturnValue() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" value ");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("value2");
 
@@ -102,8 +99,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetInputAbsentNull_thenReturnEmpty()
-        throws Exception {
+    void whenGetInputAbsentNull_thenReturnEmpty() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(null);
         var testInput = this.gitHubActionsKit.getInput("test");
         assertThat(testInput).isEmpty();
@@ -116,8 +112,7 @@ class GitHubActionsKitTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {"  "})
-    void whenGetInputAbsentNullEmptyBlankString_thenReturnEmpty(String absentEnvValue)
-        throws Exception {
+    void whenGetInputAbsentNullEmptyBlankString_thenReturnEmpty(String absentEnvValue) throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(absentEnvValue);
         var testInput = this.gitHubActionsKit.getInput("test");
         assertThat(testInput).isEmpty();
@@ -128,8 +123,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetInputNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenGetInputNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getInput(null));
     }
 
@@ -137,8 +131,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetInputTrimTruePresent_thenReturnValueTrimmed()
-        throws Exception {
+    void whenGetInputTrimTruePresent_thenReturnValueTrimmed() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" value ");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("value2");
 
@@ -156,8 +149,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetInputTrimFalsePresent_thenReturnValueNotTrimmed()
-        throws Exception {
+    void whenGetInputTrimFalsePresent_thenReturnValueNotTrimmed() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" value ");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("value2");
 
@@ -175,8 +167,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetInputTrimNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenGetInputTrimNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getInput(null, false));
     }
 
@@ -184,8 +175,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredInputPresent_thenReturnValue()
-        throws Exception {
+    void whenGetRequiredInputPresent_thenReturnValue() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" value ");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("value2");
 
@@ -203,8 +193,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredInputAbsent_thenThrowNoSuchElementException()
-        throws Exception {
+    void whenGetRequiredInputAbsent_thenThrowNoSuchElementException() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(null);
         assertThrows(NoSuchElementException.class, () -> this.gitHubActionsKit.getRequiredInput("test"));
         verify(this.systemProxyMock).getenv("INPUT_TEST");
@@ -214,8 +203,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredInputNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenGetRequiredInputNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getRequiredInput(null));
     }
 
@@ -223,8 +211,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredInputTrimTruePresent_thenReturnValueTrimmed()
-        throws Exception {
+    void whenGetRequiredInputTrimTruePresent_thenReturnValueTrimmed() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" value ");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("value2");
 
@@ -242,8 +229,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredInputTrimFalsePresent_thenReturnValueNotTrimmed()
-        throws Exception {
+    void whenGetRequiredInputTrimFalsePresent_thenReturnValueNotTrimmed() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" value ");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("value2");
 
@@ -261,8 +247,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredInputTrimAbsent_thenThrowNoSuchElementException()
-        throws Exception {
+    void whenGetRequiredInputTrimAbsent_thenThrowNoSuchElementException() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(null);
         assertThrows(NoSuchElementException.class, () -> this.gitHubActionsKit.getRequiredInput("test", true));
         verify(this.systemProxyMock).getenv("INPUT_TEST");
@@ -272,8 +257,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredInputTrimNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenGetRequiredInputTrimNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getRequiredInput(null, false));
     }
 
@@ -281,8 +265,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetBooleanInputPresent_thenReturnValue()
-        throws Exception {
+    void whenGetBooleanInputPresent_thenReturnValue() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" true ");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("false");
 
@@ -296,15 +279,13 @@ class GitHubActionsKitTest {
 
         verify(this.systemProxyMock).getenv("INPUT_TEST");
         verify(this.systemProxyMock).getenv("INPUT_TEST_2");
-
     }
 
     /**
      * Test method.
      */
     @Test
-    void whenGetBooleanInputAbsent_thenReturnEmpty()
-        throws Exception {
+    void whenGetBooleanInputAbsent_thenReturnEmpty() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(null);
         var testInput = this.gitHubActionsKit.getBooleanInput("test");
         assertThat(testInput).isEmpty();
@@ -315,8 +296,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetBooleanInputInvalid_thenThrowIllegalArgumentException()
-        throws Exception {
+    void whenGetBooleanInputInvalid_thenThrowIllegalArgumentException() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn("abcd");
 
         assertThrows(IllegalArgumentException.class, () -> this.gitHubActionsKit.getBooleanInput("test"));
@@ -328,8 +308,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetBooleanInputNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenGetBooleanInputNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getBooleanInput(null));
     }
 
@@ -337,8 +316,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredBooleanInputPresent_thenReturnValue()
-        throws Exception {
+    void whenGetRequiredBooleanInputPresent_thenReturnValue() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" true ");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("false");
 
@@ -350,15 +328,13 @@ class GitHubActionsKitTest {
 
         verify(this.systemProxyMock).getenv("INPUT_TEST");
         verify(this.systemProxyMock).getenv("INPUT_TEST_2");
-
     }
 
     /**
      * Test method.
      */
     @Test
-    void whenGetRequiredBooleanInputAbsent_thenThrowNoSuchElementException()
-        throws Exception {
+    void whenGetRequiredBooleanInputAbsent_thenThrowNoSuchElementException() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(null);
         assertThrows(NoSuchElementException.class, () -> this.gitHubActionsKit.getRequiredBooleanInput("test"));
         verify(this.systemProxyMock).getenv("INPUT_TEST");
@@ -368,8 +344,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredBooleanInputInvalid_thenThrowIllegalArgumentException()
-        throws Exception {
+    void whenGetRequiredBooleanInputInvalid_thenThrowIllegalArgumentException() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn("abcd");
 
         assertThrows(IllegalArgumentException.class, () -> this.gitHubActionsKit.getRequiredBooleanInput("test"));
@@ -381,8 +356,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredBooleanInputNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenGetRequiredBooleanInputNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getRequiredBooleanInput(null));
     }
 
@@ -390,8 +364,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetEnumInputPresent_thenReturnValue()
-        throws Exception {
+    void whenGetEnumInputPresent_thenReturnValue() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" green ");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("BLUE");
 
@@ -411,8 +384,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetEnumInputAbsent_thenReturnEmpty()
-        throws Exception {
+    void whenGetEnumInputAbsent_thenReturnEmpty() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(null);
         var testInput = this.gitHubActionsKit.getEnumInput("test", Color.class);
         assertThat(testInput).isEmpty();
@@ -423,8 +395,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetEnumInputInvalid_thenThrowIllegalArgumentException()
-        throws Exception {
+    void whenGetEnumInputInvalid_thenThrowIllegalArgumentException() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn("abcd");
 
         assertThrows(IllegalArgumentException.class, () -> this.gitHubActionsKit.getEnumInput("test", Color.class));
@@ -436,8 +407,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetEnumInputNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenGetEnumInputNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getEnumInput(null, Color.class));
     }
 
@@ -445,8 +415,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredEnumInputPresent_thenReturnValue()
-        throws Exception {
+    void whenGetRequiredEnumInputPresent_thenReturnValue() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" green ");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("BLUE");
 
@@ -464,10 +433,10 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredEnumInputAbsent_thenThrowNoSuchElementException()
-        throws Exception {
+    void whenGetRequiredEnumInputAbsent_thenThrowNoSuchElementException() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(null);
-        assertThrows(NoSuchElementException.class, () -> this.gitHubActionsKit.getRequiredEnumInput("test", Color.class));
+        assertThrows(
+                NoSuchElementException.class, () -> this.gitHubActionsKit.getRequiredEnumInput("test", Color.class));
         verify(this.systemProxyMock).getenv("INPUT_TEST");
     }
 
@@ -475,11 +444,11 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredEnumInputInvalid_thenThrowIllegalArgumentException()
-        throws Exception {
+    void whenGetRequiredEnumInputInvalid_thenThrowIllegalArgumentException() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn("abcd");
 
-        assertThrows(IllegalArgumentException.class, () -> this.gitHubActionsKit.getRequiredEnumInput("test", Color.class));
+        assertThrows(
+                IllegalArgumentException.class, () -> this.gitHubActionsKit.getRequiredEnumInput("test", Color.class));
 
         verify(this.systemProxyMock).getenv("INPUT_TEST");
     }
@@ -488,8 +457,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredEnumInputNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenGetRequiredEnumInputNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getRequiredEnumInput(null, Color.class));
     }
 
@@ -497,8 +465,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetMultilineInputPresent_thenReturnValue()
-        throws Exception {
+    void whenGetMultilineInputPresent_thenReturnValue() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" value \nvalue2\n\n    \nvalue3\n");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("value2");
 
@@ -517,8 +484,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetMultilineInputAbsent_thenReturnEmpty()
-        throws Exception {
+    void whenGetMultilineInputAbsent_thenReturnEmpty() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(null);
         var testInput = this.gitHubActionsKit.getMultilineInput("test");
         assertThat(testInput).isEmpty();
@@ -529,8 +495,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetMultilineInputNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenGetMultilineInputNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getMultilineInput(null));
     }
 
@@ -538,8 +503,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetMultilineInputTrimTruePresent_thenReturnValueTrimmed()
-        throws Exception {
+    void whenGetMultilineInputTrimTruePresent_thenReturnValueTrimmed() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" value \nvalue2\n\n    \nvalue3\n");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("value2");
 
@@ -558,8 +522,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetMultilineInputTrimFalsePresent_thenReturnValueNotTrimmed()
-        throws Exception {
+    void whenGetMultilineInputTrimFalsePresent_thenReturnValueNotTrimmed() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" value \nvalue2\n\n    \nvalue3\n");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("value2");
 
@@ -578,8 +541,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetMultilineInputTrimAbsent_thenReturnEmpty()
-        throws Exception {
+    void whenGetMultilineInputTrimAbsent_thenReturnEmpty() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(null);
         var testInput = this.gitHubActionsKit.getMultilineInput("test", true);
         assertThat(testInput).isEmpty();
@@ -590,8 +552,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetMultilineInputTrimNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenGetMultilineInputTrimNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getMultilineInput(null, false));
     }
 
@@ -599,8 +560,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredMultilineInputPresent_thenReturnValue()
-        throws Exception {
+    void whenGetRequiredMultilineInputPresent_thenReturnValue() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" value \nvalue2\n\n    \nvalue3\n");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("value2");
 
@@ -618,8 +578,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredMultilineInputAbsent_thenThrowNoSuchElementException()
-        throws Exception {
+    void whenGetRequiredMultilineInputAbsent_thenThrowNoSuchElementException() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(null);
         assertThrows(NoSuchElementException.class, () -> this.gitHubActionsKit.getRequiredMultilineInput("test"));
         verify(this.systemProxyMock).getenv("INPUT_TEST");
@@ -629,8 +588,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredMultilineInputNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenGetRequiredMultilineInputNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getRequiredMultilineInput(null));
     }
 
@@ -638,8 +596,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredMultilineInputTrimTruePresent_thenReturnValueTrimmed()
-        throws Exception {
+    void whenGetRequiredMultilineInputTrimTruePresent_thenReturnValueTrimmed() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" value \nvalue2\n\n    \nvalue3\n");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("value2");
 
@@ -657,8 +614,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredMultilineInputTrimFalsePresent_thenReturnValueNotTrimmed()
-        throws Exception {
+    void whenGetRequiredMultilineInputTrimFalsePresent_thenReturnValueNotTrimmed() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(" value \nvalue2\n\n    \nvalue3\n");
         when(this.systemProxyMock.getenv("INPUT_TEST_2")).thenReturn("value2");
 
@@ -676,8 +632,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredMultilineTrimInputAbsent_thenThrowNoSuchElementException()
-        throws Exception {
+    void whenGetRequiredMultilineTrimInputAbsent_thenThrowNoSuchElementException() throws Exception {
         when(this.systemProxyMock.getenv("INPUT_TEST")).thenReturn(null);
         assertThrows(NoSuchElementException.class, () -> this.gitHubActionsKit.getRequiredMultilineInput("test", true));
         verify(this.systemProxyMock).getenv("INPUT_TEST");
@@ -687,8 +642,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredMultilineTrimInputNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenGetRequiredMultilineTrimInputNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getRequiredMultilineInput(null, false));
     }
 
@@ -696,8 +650,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenSetOutput_thenPrintCommand()
-        throws Exception {
+    void whenSetOutput_thenPrintCommand() throws Exception {
         this.gitHubActionsKit.setOutput("variable", "value");
         verify(this.systemProxyMock).println("::set-output name=variable::value");
         reset(this.systemProxyMock);
@@ -711,8 +664,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenSetOutputNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenSetOutputNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.setOutput(null, "value"));
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.setOutput("variable", null));
     }
@@ -721,8 +673,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenSetEmptyOutput_thenPrintCommand()
-        throws Exception {
+    void whenSetEmptyOutput_thenPrintCommand() throws Exception {
         this.gitHubActionsKit.setEmptyOutput("variable");
         verify(this.systemProxyMock).println("::set-output name=variable::");
         reset(this.systemProxyMock);
@@ -732,8 +683,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenSetEmptyOutputNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenSetEmptyOutputNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.setEmptyOutput(null));
     }
 
@@ -741,8 +691,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenSetOptionalOutputPresent_thenPrintCommand()
-        throws Exception {
+    void whenSetOptionalOutputPresent_thenPrintCommand() throws Exception {
         this.gitHubActionsKit.setOptionalOutput("variable", Optional.of("value"));
         verify(this.systemProxyMock).println("::set-output name=variable::value");
         reset(this.systemProxyMock);
@@ -752,8 +701,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenSetOptionalOutputEmpty_thenPrintCommand()
-        throws Exception {
+    void whenSetOptionalOutputEmpty_thenPrintCommand() throws Exception {
         this.gitHubActionsKit.setOptionalOutput("variable", Optional.empty());
         verify(this.systemProxyMock).println("::set-output name=variable::");
         reset(this.systemProxyMock);
@@ -763,8 +711,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenSetOptionalOutputNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenSetOptionalOutputNull_thenThrowNullPointerException() throws Exception {
         var emptyOpt = Optional.empty();
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.setOptionalOutput(null, emptyOpt));
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.setOptionalOutput("variable", null));
@@ -774,8 +721,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenSetCommandEchoEnabled_thenPrintCommand()
-        throws Exception {
+    void whenSetCommandEchoEnabled_thenPrintCommand() throws Exception {
         this.gitHubActionsKit.setCommandEcho(true);
         verify(this.systemProxyMock).println("::echo::on");
 
@@ -787,8 +733,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenStartGroup_thenPrintCommand()
-        throws Exception {
+    void whenStartGroup_thenPrintCommand() throws Exception {
         this.gitHubActionsKit.startGroup("group name");
         verify(this.systemProxyMock).println("::group::group name");
     }
@@ -797,8 +742,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenStartGroupNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenStartGroupNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.startGroup(null));
     }
 
@@ -806,8 +750,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenRunInGroup_thenPrintCommand()
-        throws Exception {
+    void whenRunInGroup_thenPrintCommand() throws Exception {
         this.gitHubActionsKit.group("group name", () -> {
             this.gitHubActionsKit.setCommandEcho(true);
         });
@@ -820,10 +763,8 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenRunInGroupNull_thenThrowNullPointerException()
-        throws Exception {
-        assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.group(null, () -> {
-        }));
+    void whenRunInGroupNull_thenThrowNullPointerException() throws Exception {
+        assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.group(null, () -> {}));
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.group("group name", (Runnable) null));
     }
 
@@ -831,8 +772,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenCallInGroup_thenPrintCommand()
-        throws Exception {
+    void whenCallInGroup_thenPrintCommand() throws Exception {
         var result = this.gitHubActionsKit.group("group name", () -> {
             this.gitHubActionsKit.setCommandEcho(true);
             return 123;
@@ -847,11 +787,12 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenCallInGroupNull_thenThrowNullPointerException()
-        throws Exception {
-        assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.group(null, () -> {
-            return 123;
-        }));
+    void whenCallInGroupNull_thenThrowNullPointerException() throws Exception {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.gitHubActionsKit.group(null, () -> {
+                    return 123;
+                }));
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.group("group name", (Callable<?>) null));
     }
 
@@ -859,8 +800,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenEndGroup_thenPrintCommand()
-        throws Exception {
+    void whenEndGroup_thenPrintCommand() throws Exception {
         this.gitHubActionsKit.endGroup();
         verify(this.systemProxyMock).println("::endgroup::");
     }
@@ -869,8 +809,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenSaveState_thenPrintCommand()
-        throws Exception {
+    void whenSaveState_thenPrintCommand() throws Exception {
         this.gitHubActionsKit.saveState("variable", "value");
         verify(this.systemProxyMock).println("::save-state name=variable::value");
 
@@ -882,8 +821,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenSaveStateNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenSaveStateNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.saveState(null, "value"));
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.saveState("variable", null));
     }
@@ -892,8 +830,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetStatePresent_thenReturnValue()
-        throws Exception {
+    void whenGetStatePresent_thenReturnValue() throws Exception {
         when(this.systemProxyMock.getenv("STATE_TEST")).thenReturn(" value ");
         when(this.systemProxyMock.getenv("STATE_TEST_2")).thenReturn("value2");
 
@@ -911,8 +848,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetStateNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenGetStateNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getState(null));
     }
 
@@ -920,8 +856,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetStateAbsent_thenReturnEmpty()
-        throws Exception {
+    void whenGetStateAbsent_thenReturnEmpty() throws Exception {
         when(this.systemProxyMock.getenv("STATE_TEST")).thenReturn(null);
         var testInput = this.gitHubActionsKit.getState("test");
         assertThat(testInput).isEmpty();
@@ -932,8 +867,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenSetSecret_thenPrintCommand()
-        throws Exception {
+    void whenSetSecret_thenPrintCommand() throws Exception {
         this.gitHubActionsKit.setSecret("value");
         verify(this.systemProxyMock).println("::add-mask::value");
         reset(this.systemProxyMock);
@@ -947,8 +881,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenSetSecretNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenSetSecretNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.setSecret(null));
     }
 
@@ -956,8 +889,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenIsDebug_thenReturnValue()
-        throws Exception {
+    void whenIsDebug_thenReturnValue() throws Exception {
         when(this.systemProxyMock.getenv("RUNNER_DEBUG")).thenReturn("1");
         assertThat(this.gitHubActionsKit.isDebug()).isTrue();
         verify(this.systemProxyMock).getenv("RUNNER_DEBUG");
@@ -978,8 +910,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenFail_thenExitWithErrorCode()
-        throws Exception {
+    void whenFail_thenExitWithErrorCode() throws Exception {
         this.gitHubActionsKit.fail("fatal error");
         verify(this.systemProxyMock).println("::error::fatal error");
         verify(this.systemProxyMock).exit(1);
@@ -989,8 +920,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenFailNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenFailNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.fail(null));
     }
 
@@ -998,8 +928,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenDebug_thenPrintCommand()
-        throws Exception {
+    void whenDebug_thenPrintCommand() throws Exception {
         this.gitHubActionsKit.debug("some message");
         verify(this.systemProxyMock).println("::debug::some message");
     }
@@ -1008,8 +937,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenDebugNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenDebugNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.debug(null));
     }
 
@@ -1017,8 +945,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenNotice_thenPrintCommand()
-        throws Exception {
+    void whenNotice_thenPrintCommand() throws Exception {
         this.gitHubActionsKit.notice("some message");
         verify(this.systemProxyMock).println("::notice::some message");
     }
@@ -1027,8 +954,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenNoticeNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenNoticeNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.notice(null));
     }
 
@@ -1036,29 +962,28 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenNoticeProperties_thenPrintCommand()
-        throws Exception {
-        //@formatter:off
+    void whenNoticeProperties_thenPrintCommand() throws Exception {
+        // @formatter:off
         var props = AnnotationProperties.builder()
-            .title("title")
-            .file("file.txt")
-            .startLine(1)
-            .endLine(1)
-            .startColumn(1)
-            .endColumn(3)
-            .build();
-        //@formatter:on
+                .title("title")
+                .file("file.txt")
+                .startLine(1)
+                .endLine(1)
+                .startColumn(1)
+                .endColumn(3)
+                .build();
+        // @formatter:on
         this.gitHubActionsKit.notice("some message", Optional.of(props));
-        verify(this.systemProxyMock).println("::notice col=1,endColumn=3,endLine=1,file=file.txt,line=1,title=title::some message");
+        verify(this.systemProxyMock)
+                .println("::notice col=1,endColumn=3,endLine=1,file=file.txt,line=1,title=title::some message");
     }
 
     /**
      * Test method.
      */
     @Test
-    void whenNoticePropertiesNull_thenThrowNullPointerException()
-        throws Exception {
-        var emptyOptional = Optional.<AnnotationProperties> empty();
+    void whenNoticePropertiesNull_thenThrowNullPointerException() throws Exception {
+        var emptyOptional = Optional.<AnnotationProperties>empty();
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.notice(null, emptyOptional));
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.notice("some message", null));
     }
@@ -1067,8 +992,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenWarning_thenPrintCommand()
-        throws Exception {
+    void whenWarning_thenPrintCommand() throws Exception {
         this.gitHubActionsKit.warning("some message");
         verify(this.systemProxyMock).println("::warning::some message");
     }
@@ -1077,8 +1001,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenWarningNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenWarningNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.warning(null));
     }
 
@@ -1086,29 +1009,28 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenWarningProperties_thenPrintCommand()
-        throws Exception {
-        //@formatter:off
+    void whenWarningProperties_thenPrintCommand() throws Exception {
+        // @formatter:off
         var props = AnnotationProperties.builder()
-            .title("title")
-            .file("file.txt")
-            .startLine(1)
-            .endLine(1)
-            .startColumn(1)
-            .endColumn(3)
-            .build();
-        //@formatter:on
+                .title("title")
+                .file("file.txt")
+                .startLine(1)
+                .endLine(1)
+                .startColumn(1)
+                .endColumn(3)
+                .build();
+        // @formatter:on
         this.gitHubActionsKit.warning("some message", Optional.of(props));
-        verify(this.systemProxyMock).println("::warning col=1,endColumn=3,endLine=1,file=file.txt,line=1,title=title::some message");
+        verify(this.systemProxyMock)
+                .println("::warning col=1,endColumn=3,endLine=1,file=file.txt,line=1,title=title::some message");
     }
 
     /**
      * Test method.
      */
     @Test
-    void whenWarningPropertiesNull_thenThrowNullPointerException()
-        throws Exception {
-        var emptyOptional = Optional.<AnnotationProperties> empty();
+    void whenWarningPropertiesNull_thenThrowNullPointerException() throws Exception {
+        var emptyOptional = Optional.<AnnotationProperties>empty();
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.warning(null, emptyOptional));
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.warning("some message", null));
     }
@@ -1117,8 +1039,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenError_thenPrintCommand()
-        throws Exception {
+    void whenError_thenPrintCommand() throws Exception {
         this.gitHubActionsKit.error("some message");
         verify(this.systemProxyMock).println("::error::some message");
     }
@@ -1127,8 +1048,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenErrorNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenErrorNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.error(null));
     }
 
@@ -1136,29 +1056,28 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenErrorProperties_thenPrintCommand()
-        throws Exception {
-        //@formatter:off
+    void whenErrorProperties_thenPrintCommand() throws Exception {
+        // @formatter:off
         var props = AnnotationProperties.builder()
-            .title("title")
-            .file("file.txt")
-            .startLine(1)
-            .endLine(1)
-            .startColumn(1)
-            .endColumn(3)
-            .build();
-        //@formatter:on
+                .title("title")
+                .file("file.txt")
+                .startLine(1)
+                .endLine(1)
+                .startColumn(1)
+                .endColumn(3)
+                .build();
+        // @formatter:on
         this.gitHubActionsKit.error("some message", Optional.of(props));
-        verify(this.systemProxyMock).println("::error col=1,endColumn=3,endLine=1,file=file.txt,line=1,title=title::some message");
+        verify(this.systemProxyMock)
+                .println("::error col=1,endColumn=3,endLine=1,file=file.txt,line=1,title=title::some message");
     }
 
     /**
      * Test method.
      */
     @Test
-    void whenErrorPropertiesNull_thenThrowNullPointerException()
-        throws Exception {
-        var emptyOptional = Optional.<AnnotationProperties> empty();
+    void whenErrorPropertiesNull_thenThrowNullPointerException() throws Exception {
+        var emptyOptional = Optional.<AnnotationProperties>empty();
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.error(null, emptyOptional));
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.error("some message", null));
     }
@@ -1167,8 +1086,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetGitHubEnvVarsBranch_thenReturnValue()
-        throws Exception {
+    void whenGetGitHubEnvVarsBranch_thenReturnValue() throws Exception {
         when(this.systemProxyMock.getenv("GITHUB_REF")).thenReturn("refs/heads/feature-branch-1");
         when(this.systemProxyMock.getenv("GITHUB_REF_NAME")).thenReturn("feature-branch-1");
         when(this.systemProxyMock.getenv("GITHUB_REF_TYPE")).thenReturn("branch");
@@ -1201,8 +1119,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetGitHubEnvVarsTag_thenReturnValue()
-        throws Exception {
+    void whenGetGitHubEnvVarsTag_thenReturnValue() throws Exception {
         when(this.systemProxyMock.getenv("GITHUB_REF")).thenReturn("refs/tags/1.0.0");
         when(this.systemProxyMock.getenv("GITHUB_REF_NAME")).thenReturn("1.0.0");
         when(this.systemProxyMock.getenv("GITHUB_REF_TYPE")).thenReturn("tag");
@@ -1235,8 +1152,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetGitHubEnvVars_thenThrowNoSuchElementException()
-        throws Exception {
+    void whenGetGitHubEnvVars_thenThrowNoSuchElementException() throws Exception {
         when(this.systemProxyMock.getenv("GITHUB_REF")).thenReturn(null);
         when(this.systemProxyMock.getenv("GITHUB_REF_NAME")).thenReturn(null);
         when(this.systemProxyMock.getenv("GITHUB_REF_TYPE")).thenReturn(null);
@@ -1269,8 +1185,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetEnvPresent_thenReturnValue()
-        throws Exception {
+    void whenGetEnvPresent_thenReturnValue() throws Exception {
         when(this.systemProxyMock.getenv("TEST")).thenReturn("value");
         var result = this.gitHubActionsKit.getEnv("TEST");
         assertThat(result).isPresent().contains("value");
@@ -1281,8 +1196,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetEnvAbsent_thenReturnEmpty()
-        throws Exception {
+    void whenGetEnvAbsent_thenReturnEmpty() throws Exception {
         when(this.systemProxyMock.getenv("TEST")).thenReturn(null);
         assertThat(this.gitHubActionsKit.getEnv("TEST")).isEmpty();
         verify(this.systemProxyMock).getenv("TEST");
@@ -1292,8 +1206,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetEnvNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenGetEnvNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getEnv(null));
     }
 
@@ -1301,8 +1214,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredEnvPresent_thenReturnValue()
-        throws Exception {
+    void whenGetRequiredEnvPresent_thenReturnValue() throws Exception {
         when(this.systemProxyMock.getenv("TEST")).thenReturn("value");
         assertThat(this.gitHubActionsKit.getRequiredEnv("TEST")).isEqualTo("value");
         verify(this.systemProxyMock).getenv("TEST");
@@ -1312,8 +1224,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredEnvAbsent_thenThrowNoSuchElementException()
-        throws Exception {
+    void whenGetRequiredEnvAbsent_thenThrowNoSuchElementException() throws Exception {
         when(this.systemProxyMock.getenv("TEST")).thenReturn(null);
         assertThrows(NoSuchElementException.class, () -> this.gitHubActionsKit.getRequiredEnv("TEST"));
         verify(this.systemProxyMock).getenv("TEST");
@@ -1323,8 +1234,7 @@ class GitHubActionsKitTest {
      * Test method.
      */
     @Test
-    void whenGetRequiredEnvNull_thenThrowNullPointerException()
-        throws Exception {
+    void whenGetRequiredEnvNull_thenThrowNullPointerException() throws Exception {
         assertThrows(NullPointerException.class, () -> this.gitHubActionsKit.getRequiredEnv(null));
     }
 }

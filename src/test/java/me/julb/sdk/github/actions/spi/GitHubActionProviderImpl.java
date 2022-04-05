@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package me.julb.sdk.github.actions.spi;
 
 /**
@@ -34,7 +33,5 @@ public class GitHubActionProviderImpl implements GitHubActionProvider {
      * {@inheritDoc}
      */
     @Override
-    public void execute() {
-
-    }
+    public void execute() {}
 }

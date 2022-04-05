@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package me.julb.sdk.github.actions.kit;
 
 import java.util.Map;
@@ -171,7 +170,9 @@ public class GitHubActionsKit {
      * @return the multiline input value as an array, or empty if input is not provided.
      */
     public Optional<String[]> getMultilineInput(@NonNull String name, boolean trimValue) {
-        return getInput(name, trimValue).map(String::lines).map(stream -> stream.map(s -> trimValue ? s.trim() : s).filter(s -> !s.isBlank()).toArray(String[]::new));
+        return getInput(name, trimValue).map(String::lines).map(stream -> stream.map(s -> trimValue ? s.trim() : s)
+                .filter(s -> !s.isBlank())
+                .toArray(String[]::new));
     }
 
     /**
@@ -269,8 +270,7 @@ public class GitHubActionsKit {
      * @return the result returned by the {@link Callable}.
      * @throws Exception propagate as-is the exception thrown by the {@link Callable}.
      */
-    public <T> T group(@NonNull String name, @NonNull Callable<T> exec)
-        throws Exception {
+    public <T> T group(@NonNull String name, @NonNull Callable<T> exec) throws Exception {
         startGroup(name);
         try {
             return exec.call();
@@ -552,5 +552,4 @@ public class GitHubActionsKit {
     private <P, M> void issueCommand(String command, Optional<Map<String, P>> properties, Optional<M> message) {
         this.systemProxy.println(new ExecCommand<>(command, properties, message).toString());
     }
-
 }
