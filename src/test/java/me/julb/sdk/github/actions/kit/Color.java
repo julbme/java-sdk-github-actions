@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package me.julb.sdk.github.actions.kit;
 
 /**
@@ -29,7 +28,6 @@ package me.julb.sdk.github.actions.kit;
  * @author Julb.
  */
 public enum Color {
-
     GREEN,
 
     BLUE,

@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package me.julb.sdk.github.actions.kit;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.catchSystemExit;
@@ -46,8 +45,7 @@ class SystemProxySystemImplTest {
      * Test method.
      */
     @Test
-    void whenExit_thenInvokeSystemExit()
-        throws Exception {
+    void whenExit_thenInvokeSystemExit() throws Exception {
         var exitCode = catchSystemExit(() -> systemProxy.exit(1));
         assertThat(exitCode).isEqualTo(1);
     }
@@ -56,8 +54,7 @@ class SystemProxySystemImplTest {
      * Test method.
      */
     @Test
-    void whenPrintln_thenInvokeSystemPrintln()
-        throws Exception {
+    void whenPrintln_thenInvokeSystemPrintln() throws Exception {
         var output = tapSystemOutNormalized(() -> {
             systemProxy.println();
         });
@@ -68,8 +65,7 @@ class SystemProxySystemImplTest {
      * Test method.
      */
     @Test
-    void whenPrintlnMessage_thenInvokeSystemPrintlnMessage()
-        throws Exception {
+    void whenPrintlnMessage_thenInvokeSystemPrintlnMessage() throws Exception {
         var output = tapSystemOutNormalized(() -> {
             systemProxy.println("Hello World");
         });
@@ -80,8 +76,7 @@ class SystemProxySystemImplTest {
      * Test method.
      */
     @Test
-    void whenGetenv_thenInvokeSystemGetenv()
-        throws Exception {
+    void whenGetenv_thenInvokeSystemGetenv() throws Exception {
         withEnvironmentVariable("INPUT", "value").execute(() -> {
             assertThat(this.systemProxy.getenv("INPUT")).isEqualTo("value");
             assertThat(this.systemProxy.getenv("INPUT2")).isNull();

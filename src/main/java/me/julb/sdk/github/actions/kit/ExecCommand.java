@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package me.julb.sdk.github.actions.kit;
 
 import java.util.Map;
@@ -79,7 +78,10 @@ class ExecCommand<P, M> {
         // Add properties
         this.properties.ifPresent(map -> {
             if (!map.isEmpty()) {
-                var propertiesAsList = map.entrySet().stream().map(entry -> String.format("%s=%s", entry.getKey(), escapePropertyValue(Optional.ofNullable(entry.getValue())))).toList();
+                var propertiesAsList = map.entrySet().stream()
+                        .map(entry -> String.format(
+                                "%s=%s", entry.getKey(), escapePropertyValue(Optional.ofNullable(entry.getValue()))))
+                        .toList();
                 sb.append(" ").append(String.join(",", propertiesAsList));
             }
         });
@@ -97,7 +99,14 @@ class ExecCommand<P, M> {
      * @return the message with special characters escaped.
      */
     private static <T> String escapePropertyValue(Optional<T> propertyValue) {
-        return propertyValue.map(Object::toString).orElse("").replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A").replace(":", "%3A").replace(",", "%2C");
+        return propertyValue
+                .map(Object::toString)
+                .orElse("")
+                .replace("%", "%25")
+                .replace("\r", "%0D")
+                .replace("\n", "%0A")
+                .replace(":", "%3A")
+                .replace(",", "%2C");
     }
 
     /**
@@ -106,6 +115,10 @@ class ExecCommand<P, M> {
      * @return the message with special characters escaped.
      */
     private static <T> String escapeMessage(Optional<T> message) {
-        return message.map(Object::toString).orElse("").replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A");
+        return message.map(Object::toString)
+                .orElse("")
+                .replace("%", "%25")
+                .replace("\r", "%0D")
+                .replace("\n", "%0A");
     }
 }

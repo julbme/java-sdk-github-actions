@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package me.julb.sdk.github.actions.kit;
 
 import java.util.Map;
@@ -37,8 +36,8 @@ import lombok.Builder;
 @Builder
 public class AnnotationProperties {
 
-    //@formatter:off
-     /**
+    // @formatter:off
+    /**
      * A title for the annotation.
      * -- GETTER --
      * Getter for {@link #title} property.
@@ -47,11 +46,11 @@ public class AnnotationProperties {
      * Setter for {@link #title} property.
      * @param title the value to set.
      */
-     //@formatter:on
+    // @formatter:on
     private String title;
 
-    //@formatter:off
-     /**
+    // @formatter:off
+    /**
      * The path of the file for which the annotation should be created.
      * -- GETTER --
      * Getter for {@link #file} property.
@@ -60,11 +59,11 @@ public class AnnotationProperties {
      * Setter for {@link #file} property.
      * @param file the value to set.
      */
-     //@formatter:on
+    // @formatter:on
     private String file;
 
-    //@formatter:off
-     /**
+    // @formatter:off
+    /**
      * The start line for the annotation.
      * -- GETTER --
      * Getter for {@link #startLine} property.
@@ -73,11 +72,11 @@ public class AnnotationProperties {
      * Setter for {@link #startLine} property.
      * @param startLine the value to set.
      */
-     //@formatter:on
+    // @formatter:on
     private Integer startLine;
 
-    //@formatter:off
-     /**
+    // @formatter:off
+    /**
      * The end line for the annotation. Defaults to `startLine` when `startLine` is provided.
      * -- GETTER --
      * Getter for {@link #endLine} property.
@@ -86,11 +85,11 @@ public class AnnotationProperties {
      * Setter for {@link #endLine} property.
      * @param endLine the value to set.
      */
-     //@formatter:on
+    // @formatter:on
     private Integer endLine;
 
-    //@formatter:off
-     /**
+    // @formatter:off
+    /**
      * The start column for the annotation. Cannot be sent when `startLine` and `endLine` are different values.
      * -- GETTER --
      * Getter for {@link #startColumn} property.
@@ -99,11 +98,11 @@ public class AnnotationProperties {
      * Setter for {@link #startColumn} property.
      * @param startColumn the value to set.
      */
-     //@formatter:on
+    // @formatter:on
     private Integer startColumn;
 
-    //@formatter:off
-     /**
+    // @formatter:off
+    /**
      * The start column for the annotation. Cannot be sent when `startLine` and `endLine` are different values. Defaults to `startColumn` when `startColumn` is provided.
      * -- GETTER --
      * Getter for {@link #endColumn} property.
@@ -112,7 +111,7 @@ public class AnnotationProperties {
      * Setter for {@link #endColumn} property.
      * @param endColumn the value to set.
      */
-     //@formatter:on
+    // @formatter:on
     private Integer endColumn;
 
     // ------------------------------------------ Utility methods.
@@ -128,7 +127,9 @@ public class AnnotationProperties {
         map.put("line", Optional.ofNullable(startLine).map(Object::toString).orElse(null));
         map.put("endLine", Optional.ofNullable(endLine).map(Object::toString).orElse(null));
         map.put("col", Optional.ofNullable(startColumn).map(Object::toString).orElse(null));
-        map.put("endColumn", Optional.ofNullable(endColumn).map(Object::toString).orElse(null));
+        map.put(
+                "endColumn",
+                Optional.ofNullable(endColumn).map(Object::toString).orElse(null));
         return map;
     }
 
