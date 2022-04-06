@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package me.julb.sdk.github.actions.spi;
 
 import java.util.Optional;
@@ -41,7 +40,7 @@ public class GitHubActionServiceLoader {
      * @return the first {@link GitHubActionProvider} found or {@link Optional#empty()} if not defined.
      */
     public static Optional&lt;GitHubActionProvider&gt; getImplementation() {
-<span class="fc" id="L44">        return ServiceLoader.load(GitHubActionProvider.class).findFirst();</span>
+<span class="fc" id="L43">        return ServiceLoader.load(GitHubActionProvider.class).findFirst();</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package me.julb.sdk.github.actions.kit;
 
 import java.util.Map;
@@ -33,7 +32,7 @@ import lombok.RequiredArgsConstructor;
  * A command to issue in the GitHub action. &lt;br&gt;
  * @author Julb.
  */
-<span class="fc" id="L36">@RequiredArgsConstructor</span>
+<span class="fc" id="L35">@RequiredArgsConstructor</span>
 class ExecCommand&lt;P, M&gt; {
 
     /**
@@ -71,24 +70,26 @@ class ExecCommand&lt;P, M&gt; {
      */
     @Override
     public String toString() {
-<span class="fc" id="L74">        var sb = new StringBuilder();</span>
+<span class="fc" id="L73">        var sb = new StringBuilder();</span>
         // Add command.
-<span class="fc" id="L76">        sb.append(CMD_STRING);</span>
-<span class="fc" id="L77">        sb.append(this.name);</span>
+<span class="fc" id="L75">        sb.append(CMD_STRING);</span>
+<span class="fc" id="L76">        sb.append(this.name);</span>
 
         // Add properties
-<span class="fc" id="L80">        this.properties.ifPresent(map -&gt; {</span>
-<span class="fc bfc" id="L81" title="All 2 branches covered.">            if (!map.isEmpty()) {</span>
-<span class="fc" id="L82">                var propertiesAsList = map.entrySet().stream().map(entry -&gt; String.format(&quot;%s=%s&quot;, entry.getKey(), escapePropertyValue(Optional.ofNullable(entry.getValue())))).toList();</span>
-<span class="fc" id="L83">                sb.append(&quot; &quot;).append(String.join(&quot;,&quot;, propertiesAsList));</span>
+<span class="fc" id="L79">        this.properties.ifPresent((Map&lt;String, P&gt; map) -&gt; {</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">            if (!map.isEmpty()) {</span>
+<span class="fc" id="L81">                var propertiesAsList = map.entrySet().stream()</span>
+<span class="fc" id="L82">                        .map(entry -&gt; String.format(&quot;%s=%s&quot;, entry.getKey(), escapePropertyValue(entry.getValue())))</span>
+<span class="fc" id="L83">                        .toList();</span>
+<span class="fc" id="L84">                sb.append(&quot; &quot;).append(String.join(&quot;,&quot;, propertiesAsList));</span>
             }
-<span class="fc" id="L85">        });</span>
+<span class="fc" id="L86">        });</span>
 
         // Add message
-<span class="fc" id="L88">        sb.append(CMD_STRING);</span>
-<span class="fc" id="L89">        sb.append(escapeMessage(this.message));</span>
+<span class="fc" id="L89">        sb.append(CMD_STRING);</span>
+<span class="fc" id="L90">        sb.append(escapeMessage(this.message.orElse(null)));</span>
 
-<span class="fc" id="L91">        return sb.toString();</span>
+<span class="fc" id="L92">        return sb.toString();</span>
     }
 
     /**
@@ -96,8 +97,15 @@ class ExecCommand&lt;P, M&gt; {
      * @param message the message value.
      * @return the message with special characters escaped.
      */
-    private static &lt;T&gt; String escapePropertyValue(Optional&lt;T&gt; propertyValue) {
-<span class="fc" id="L100">        return propertyValue.map(Object::toString).orElse(&quot;&quot;).replace(&quot;%&quot;, &quot;%25&quot;).replace(&quot;\r&quot;, &quot;%0D&quot;).replace(&quot;\n&quot;, &quot;%0A&quot;).replace(&quot;:&quot;, &quot;%3A&quot;).replace(&quot;,&quot;, &quot;%2C&quot;);</span>
+    private static &lt;T&gt; String escapePropertyValue(T propertyValue) {
+<span class="fc" id="L101">        return Optional.ofNullable(propertyValue)</span>
+<span class="fc" id="L102">                .map(Object::toString)</span>
+<span class="fc" id="L103">                .orElse(&quot;&quot;)</span>
+<span class="fc" id="L104">                .replace(&quot;%&quot;, &quot;%25&quot;)</span>
+<span class="fc" id="L105">                .replace(&quot;\r&quot;, &quot;%0D&quot;)</span>
+<span class="fc" id="L106">                .replace(&quot;\n&quot;, &quot;%0A&quot;)</span>
+<span class="fc" id="L107">                .replace(&quot;:&quot;, &quot;%3A&quot;)</span>
+<span class="fc" id="L108">                .replace(&quot;,&quot;, &quot;%2C&quot;);</span>
     }
 
     /**
@@ -105,8 +113,13 @@ class ExecCommand&lt;P, M&gt; {
      * @param message the message value.
      * @return the message with special characters escaped.
      */
-    private static &lt;T&gt; String escapeMessage(Optional&lt;T&gt; message) {
-<span class="fc" id="L109">        return message.map(Object::toString).orElse(&quot;&quot;).replace(&quot;%&quot;, &quot;%25&quot;).replace(&quot;\r&quot;, &quot;%0D&quot;).replace(&quot;\n&quot;, &quot;%0A&quot;);</span>
+    private static &lt;T&gt; String escapeMessage(T message) {
+<span class="fc" id="L117">        return Optional.ofNullable(message)</span>
+<span class="fc" id="L118">                .map(Object::toString)</span>
+<span class="fc" id="L119">                .orElse(&quot;&quot;)</span>
+<span class="fc" id="L120">                .replace(&quot;%&quot;, &quot;%25&quot;)</span>
+<span class="fc" id="L121">                .replace(&quot;\r&quot;, &quot;%0D&quot;)</span>
+<span class="fc" id="L122">                .replace(&quot;\n&quot;, &quot;%0A&quot;);</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

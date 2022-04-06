@@ -21,13 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package me.julb.sdk.github.actions.kit;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 /**
@@ -35,10 +35,11 @@ import lombok.Builder;
  * @author Julb.
  */
 <span class="pc" id="L37">@Builder</span>
+<span class="fc" id="L38">@AllArgsConstructor</span>
 public class AnnotationProperties {
 
-    //@formatter:off
-     /**
+    // @formatter:off
+    /**
      * A title for the annotation.
      * -- GETTER --
      * Getter for {@link #title} property.
@@ -47,11 +48,11 @@ public class AnnotationProperties {
      * Setter for {@link #title} property.
      * @param title the value to set.
      */
-     //@formatter:on
+    // @formatter:on
     private String title;
 
-    //@formatter:off
-     /**
+    // @formatter:off
+    /**
      * The path of the file for which the annotation should be created.
      * -- GETTER --
      * Getter for {@link #file} property.
@@ -60,11 +61,11 @@ public class AnnotationProperties {
      * Setter for {@link #file} property.
      * @param file the value to set.
      */
-     //@formatter:on
+    // @formatter:on
     private String file;
 
-    //@formatter:off
-     /**
+    // @formatter:off
+    /**
      * The start line for the annotation.
      * -- GETTER --
      * Getter for {@link #startLine} property.
@@ -73,11 +74,11 @@ public class AnnotationProperties {
      * Setter for {@link #startLine} property.
      * @param startLine the value to set.
      */
-     //@formatter:on
+    // @formatter:on
     private Integer startLine;
 
-    //@formatter:off
-     /**
+    // @formatter:off
+    /**
      * The end line for the annotation. Defaults to `startLine` when `startLine` is provided.
      * -- GETTER --
      * Getter for {@link #endLine} property.
@@ -86,11 +87,11 @@ public class AnnotationProperties {
      * Setter for {@link #endLine} property.
      * @param endLine the value to set.
      */
-     //@formatter:on
+    // @formatter:on
     private Integer endLine;
 
-    //@formatter:off
-     /**
+    // @formatter:off
+    /**
      * The start column for the annotation. Cannot be sent when `startLine` and `endLine` are different values.
      * -- GETTER --
      * Getter for {@link #startColumn} property.
@@ -99,12 +100,14 @@ public class AnnotationProperties {
      * Setter for {@link #startColumn} property.
      * @param startColumn the value to set.
      */
-     //@formatter:on
+    // @formatter:on
     private Integer startColumn;
 
-    //@formatter:off
-     /**
-     * The start column for the annotation. Cannot be sent when `startLine` and `endLine` are different values. Defaults to `startColumn` when `startColumn` is provided.
+    // @formatter:off
+    /**
+     * The start column for the annotation.
+     * Cannot be sent when `startLine` and `endLine` are different values.
+     * Defaults to `startColumn` when `startColumn` is provided.
      * -- GETTER --
      * Getter for {@link #endColumn} property.
      * @return the value.
@@ -112,7 +115,7 @@ public class AnnotationProperties {
      * Setter for {@link #endColumn} property.
      * @param endColumn the value to set.
      */
-     //@formatter:on
+    // @formatter:on
     private Integer endColumn;
 
     // ------------------------------------------ Utility methods.
@@ -122,14 +125,16 @@ public class AnnotationProperties {
      * @return the properties as a {@link Map}.
      */
     public Map&lt;String, String&gt; toMap() {
-<span class="fc" id="L125">        var map = new TreeMap&lt;String, String&gt;();</span>
-<span class="fc" id="L126">        map.put(&quot;title&quot;, title);</span>
-<span class="fc" id="L127">        map.put(&quot;file&quot;, file);</span>
-<span class="fc" id="L128">        map.put(&quot;line&quot;, Optional.ofNullable(startLine).map(Object::toString).orElse(null));</span>
-<span class="fc" id="L129">        map.put(&quot;endLine&quot;, Optional.ofNullable(endLine).map(Object::toString).orElse(null));</span>
-<span class="fc" id="L130">        map.put(&quot;col&quot;, Optional.ofNullable(startColumn).map(Object::toString).orElse(null));</span>
-<span class="fc" id="L131">        map.put(&quot;endColumn&quot;, Optional.ofNullable(endColumn).map(Object::toString).orElse(null));</span>
-<span class="fc" id="L132">        return map;</span>
+<span class="fc" id="L128">        var map = new TreeMap&lt;String, String&gt;();</span>
+<span class="fc" id="L129">        map.put(&quot;title&quot;, title);</span>
+<span class="fc" id="L130">        map.put(&quot;file&quot;, file);</span>
+<span class="fc" id="L131">        map.put(&quot;line&quot;, Optional.ofNullable(startLine).map(Object::toString).orElse(null));</span>
+<span class="fc" id="L132">        map.put(&quot;endLine&quot;, Optional.ofNullable(endLine).map(Object::toString).orElse(null));</span>
+<span class="fc" id="L133">        map.put(&quot;col&quot;, Optional.ofNullable(startColumn).map(Object::toString).orElse(null));</span>
+<span class="fc" id="L134">        map.put(</span>
+                &quot;endColumn&quot;,
+<span class="fc" id="L136">                Optional.ofNullable(endColumn).map(Object::toString).orElse(null));</span>
+<span class="fc" id="L137">        return map;</span>
     }
 
     // ------------------------------------------ Read methods.
@@ -138,4 +143,4 @@ public class AnnotationProperties {
 
     // ------------------------------------------ Overridden methods.
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
