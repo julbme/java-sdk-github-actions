@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>me.julb</groupId>
 		<artifactId>parent</artifactId>
-		<version>[1,2)</version>
+		<version>1.1.0</version>
 	</parent>
 	<groupId>me.julb</groupId>
 	<artifactId>sdk-github-actions</artifactId>
@@ -69,7 +69,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
+			<artifactId>junit-jupiter-api</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
